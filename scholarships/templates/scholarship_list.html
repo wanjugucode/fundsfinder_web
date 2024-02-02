@@ -1,0 +1,52 @@
+{% include 'home.html' %}
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="main.css">
+  <title>Student_list</title>
+</head>
+
+<body>
+
+  <div class="trainer-table">
+    <table>
+      <tr>
+
+      <tr>
+        {%for scholarship in scholarship%}
+        <td>name:{{scholarship.name}}</td>
+        <td>decription:{{scholarship.description}}</td>
+        <td>egliblity:{{scholarship.eligibility_criteria}}</td>
+        <td>application_deadline:{{scholarship.application_deadline}}</td>
+      <td>  <a href="{% url 'applyscholarship'%}"><button>Apply</button> </a>    </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <style>
+
+    td{
+      /* border: 1px solid #ddd;
+      text-align: left;
+      padding-left: 48px; */
+    }
+    td {
+      padding: 15px;
+    }
+    td{
+      background-color: rgb(221, 168, 226);
+      color: black;
+    }
+  
+ 
+ 
+    </style>
+
+</body>
+
+</html>

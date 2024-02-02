@@ -1,0 +1,15 @@
+<!-- apply_for_scholarship.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Apply for Scholarship</title>
+</head>
+<body>
+    <h2>Apply for Scholarship</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit Application</button>
+    </form>
+</body>
+</html>

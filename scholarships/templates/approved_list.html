@@ -1,0 +1,45 @@
+<!-- approved_applicants_list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Approved Scholarship Applicants</title>
+</head>
+<body>
+    <h2>Approved Scholarship Applicants</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Application Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for approved_application in approved_applications %}
+            <tr>
+                <td>{{ approved_application.original_application.name }}</td>
+                <td>{{ approved_application.original_application.email }}</td>
+                <td>{{ approved_application.original_application.created_at }}</td>
+                <td>Approved</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <style>
+        table, td, th {
+  border: 1px solid #ddd;
+  text-align: left;
+  padding-left: 48px;
+}
+th, td {
+  padding: 15px;
+}
+th{
+  background-color: rgb(221, 168, 226);
+ 
+  color: black;
+}
+</style>
+</body>
+</html>
