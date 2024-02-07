@@ -1,0 +1,142 @@
+{% include 'navbar.html' %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="page">
+
+      <div></div>
+      <div class="heading">
+        <h5 class="header">Welcome to Fundsfinder</h5>
+      </div>
+      <div class="card-deck">
+        <div class="card">
+          <div class="card-body" style="background-color: rgba(56, 32, 91)">
+            <h5 class="card-title">
+              <a href="{% url 'scholarships' %}">Scholarships Available</a>
+            </h5>
+          </div>
+        </div>
+        <div class="card card1">
+          <div class="card-body" style="background-color: rgba(100, 82, 127)">
+            <h5 class="card-title">
+              <a href="{% url 'scholarships' %}">Other Funds</a>
+            </h5>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body" style="background-color: rgba(70, 32, 125)">
+            <h5 class="card-title">
+              <a href="{% url 'scholarships' %}">My History</a>
+            </h5>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <style>
+      .page {
+        margin-top: 1%;
+      }
+      .heading {
+        width: 100%;
+        height: 70px;
+        margin-left: 0%;
+        box-shadow: 1px 1px 2px 2px black;
+        margin-top: -1%;
+      }
+      .card-deck {
+        margin-left: 20%;
+        margin-right: 5%;
+      }
+      .card {
+        margin: 2%;
+        height: 130px;
+        box-shadow: 1px 1px 2px 2px black;
+        color: white;
+      }
+      h5 {
+        text-align: center;
+        margin-top: 10%;
+      }
+      h5 a {
+        color: white;
+      }
+      h5 a:hover {
+        color: white;
+        text-decoration: none;
+      }
+
+      .heading h5 {
+        text-align: center;
+        margin-top: 0%;
+      }
+      @media screen and (max-width: 420px) {
+        /*According to mobile size you can change the width*/
+        .bt-contact {
+          padding-left: 100px; /* give some less px value */
+        }
+      }
+      .mytop-navi {
+        letter-spacing: none;
+        margin: -0.5%;
+        padding-left: 20px;
+        width: 250px;
+        height: 130%;
+        background-color: #422b72;
+        position: fixed;
+        list-style: none;
+      }
+      .mytop-navi .profile {
+        margin-top: 10%;
+      }
+      .nav-list {
+        padding: 1px;
+        margin-top: 15%;
+        text-decoration: none;
+        margin-left: 25%;
+      }
+      .nav-list a {
+        display: block;
+        width: 160px;
+        color: white;
+        text-decoration: none;
+        font-size: medium;
+        margin-left: 0%;
+      }
+      .nav-list a:hover {
+        background-color: white;
+        color: #422b72;
+        text-decoration: none;
+      }
+      img {
+        border-radius: 50%;
+        height: 90px;
+        margin-left: 15%;
+        width: 90px;
+      }
+      background {
+        background: hsl(312, 23%, 42%) !important;
+      }
+      .heading .header{
+        padding-top:2%;
+      }
+    </style>
+  </body>
+</html>

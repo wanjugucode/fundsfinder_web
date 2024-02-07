@@ -1,0 +1,73 @@
+
+<div class="container">
+    <div class="main">  
+      {% for profile in profile %}
+  
+      <div class="profile">
+  
+        <img
+          src=" https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0="
+      class="profile"  />
+        <p style="color: white; margin-left: 25%">user {{profile.user}}</p>
+  
+      </div>
+  
+      <li class="profile-info">
+        <a href="{% url 'dashboard' %}">gender:{{profile.gender}}</a>
+      </li>
+      <li class="profile-info">
+        <a href="{% url 'dashboard' %}">DOB{{profile.date_of_birth}}</a>
+      </li>
+      <li class="profile-info">
+        <a href="{% url 'dashboard' %}">Tel no{{profile.telephone_number}}</a>
+      </li>
+      <li class="profile-info">
+        <a href="{% url 'dashboard' %}">contact_email{{profile.contact_email}}</a>
+      </li>
+      {% endfor %}
+    
+  
+            </div>
+    </div>
+    <style>
+      .container {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Jost', sans-serif;
+  }
+  .main{
+      width: 550px;
+      height: 500px;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 5px 5px 10px #9a8d8d;align-items: center;
+  }
+  
+        
+  .profile {
+    border-radius: 50%;
+    height: 90px;
+    margin-left: 15%;
+    width: 90px;
+  }
+  .profile-info{
+    list-style: none;
+    font-size: 22px;
+    text-align:justify;
+  
+  }
+  a{
+    text-decoration: none;
+    color: black;
+  
+  }
+  
+  
+  
+    </style>
+  </div>
+  

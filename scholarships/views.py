@@ -2,15 +2,15 @@ import os
 from django.shortcuts import get_object_or_404, render,redirect
 from .forms import *
 from .models import Scholarships
+from django.contrib.auth.decorators import login_required
+from datetime import datetime
+
+
 
 # Create your views here.
-def homepage(request):
-    return render(request,"homepage.html")
-def dashboard(request):
-    return render(request,"dashboard.html")
-def navbar(request):
-    return render(request,"navbar.html")
 
+
+@login_required
 def add_scholarship(request):
     if request.method == "POST":
         form = ScholashipAdditionForm(request.POST, request.FILES)
@@ -24,10 +24,36 @@ def add_scholarship(request):
 
     return render(request, "add_scholarship.html", {"form": form})
 
-def scholarships_list(request):
-    scholarships=Scholarships.objects.all()
-    return render(request,"scholarship_list.html",{ "scholarship":scholarships})
+from django.shortcuts import render
+from .models import Scholarships
+from datetime import datetime
 
+def scholarships_list(request):
+    scholarships = Scholarships.objects.all()
+
+    # Retrieve the search query parameters from the request
+    search_name = request.GET.get('name')
+    search_description = request.GET.get('description')
+    search_deadline = request.GET.get('deadline')
+
+    # Filtering scholarships based on search criteria
+    if search_name:
+        scholarships = scholarships.filter(name__icontains=search_name)
+    if search_description:
+        scholarships = scholarships.filter(description__icontains=search_description)
+    if search_deadline:
+        try:
+            # Assuming the search query is a date string in YYYY-MM-DD format
+            search_deadline = datetime.strptime(search_deadline, '%Y-%m-%d').date()
+            scholarships = scholarships.filter(application_deadline=search_deadline)
+        except ValueError:
+            # Handle invalid date format
+            pass
+
+    return render(request, "scholarship_list.html", {"scholarships": scholarships})
+
+
+@login_required
 def admin_scholarships_view(request):
     scholarships=Scholarships.objects.all()
     return render(request,"admin_scholarships_view.html",{ "scholarship":scholarships})
@@ -69,10 +95,7 @@ def apply_scholarship(request):
 def applicants_list(request):
     scholarship_applications = ScholarshipApplication.objects.all()
     return render(request, 'applicants_list.html', {'scholarship_applications': scholarship_applications})
-# views.py
-# def applicants_list(request):
-#     scholarship_applications = ScholarshipApplication.objects.filter(is_approved=False)
-#     return render(request, 'applicants_list.html', {'scholarship_applications': scholarship_applications})
+
 def approve_scholarship(request, id):
     # Get the scholarship application or return a 404 response if not found
     application = get_object_or_404(ScholarshipApplication, id=id)
@@ -91,3 +114,4 @@ def approve_scholarship(request, id):
 def approved_list(request):
     approved_applications = ApprovedScholarship.objects.all()
     return render(request, 'approved_list.html', {'approved_applications': approved_applications})
+

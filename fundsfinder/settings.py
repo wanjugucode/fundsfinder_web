@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'accounts',
     'scholarships',
     'userprofile',
+    'bootstrap5',
+
 ]
 
 MIDDLEWARE = [

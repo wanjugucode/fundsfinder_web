@@ -1,4 +1,3 @@
-{% include 'home.html' %}
 {%load static%}
 <!DOCTYPE html>
 <html lang="en">
@@ -13,17 +12,32 @@
 
 <body>
 
-  <div class="trainer-table">
-    <table>
+    <table id="scholarship-table">
+        <tr>
+        <th> <a href="{% url 'applicants_list'%}"><button>Applicants</button></a></th>
+        <th> <a href="{% url 'approved_list'%}"><button>Approved list</button></a></th>
+        <th> <a href="{% url 'addscholarship'%}"><button>Add scholarship</button></a></th>
+
+      </tr>
+
       <tr>
-        <th> <a href="{% url 'addscholarship'%}"><button>Add new scholarship</button></a></th>
+        <th>Name</th>
+        <th>Decription</th>
+        <th>Egliblity</th>
+        <th>Deadline</th>
+        <th>Action</th>
+        <th>Action</th>
+
+      </tr>
+      <tr>
+
 
       <tr>
         {%for scholarship in scholarship%}
-        <td>name:{{scholarship.name}}</td>
-        <td>decription:{{scholarship.description}}</td>
-        <td>egliblity:{{scholarship.eligibility_criteria}}</td>
-        <td>application_deadline:{{scholarship.application_deadline}}</td>
+        <td>{{scholarship.name}}</td>
+        <td>{{scholarship.description}}</td>
+        <td>{{scholarship.eligibility_criteria}}</td>
+        <td>{{scholarship.application_deadline}}</td>
         <td> <a href="{% url 'editscholarship' id=scholarship.id%}"><button>Edit</button></a></td>
         <td> <a href="{% url 'removescholarship' id=scholarship.id%}"><button>Remove</button></a></td>
 
@@ -31,22 +45,63 @@
       </tr>
       {% endfor %}
     </table>
-  </div>
   <style>
+  .scholarship-table {
+      margin: 20px;
+    }
 
-    td{
-      /* border: 1px solid #ddd;
-      text-align: left;
-      padding-left: 48px; */
+    #scholarship-table {
+      width: 100%;
+      border-collapse: collapse;
     }
+
+    #scholarship-table th,
+    #scholarship-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    #scholarship-table th {
+      background-color: #f2f2f2;
+      font-size: 22px;
+    }
+
+    #scholarship-table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    #scholarship-table tr:hover {
+      background-color: #ddd;
+    }
+    button a {
+      color: white;
+      padding: 2px;
+      text-decoration: none;
+    }
+    th{
+            text-align: justify;
+          }
+
     td {
+      background-color: rgb(162, 167, 241);
+      box-shadow: 10px 16px 16px #422b72;
+      font-size: 20px;
       padding: 15px;
-    }
-    td{
-      background-color: rgb(221, 168, 226);
       color: black;
     }
-  
+
+    button {
+      background-color: rgb(66, 43, 114);
+      color: white;
+      width: auto;
+      height: 30px;
+      padding: 2px;
+      font-size: 20px;
+    }
+
+    button:hover {
+      text-transform: uppercase;
+    }
  
  
     </style>
