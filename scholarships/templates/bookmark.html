@@ -1,0 +1,126 @@
+<html>
+<head>
+    <title>User Profile</title>
+</head>
+<body>
+    <h1>Welcome, {{ user_profile.user.username }}</h1>
+    <p>Bio: {{ user_profile.telephone_number }}</p>
+    <h2>Bookmarked Scholarships:</h2>
+    <table id="scholarship-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Eligibility</th>
+            <th>Application Deadline</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+    <tbody>
+        {% for scholarship in bookmarked_scholarships %}
+            <tr>
+            <td>ID:{{ scholarship.id }}</td>
+            <td>Title:{{ scholarship.name }}</td>
+            <td>Description:{{ scholarship.description }}</td>
+            <td>Eligibility:{{ scholarship.eligibility_criteria }}</td>
+            <td>Deadline{{ scholarship.application_deadline }}</td>
+
+    </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+    <style>
+
+        .scholarship-table {
+          margin: 20px;
+        }
+    
+        #scholarship-table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+    
+        #scholarship-table th,
+        #scholarship-table td {
+          border: 1px solid #ddd;
+          padding: 8px;
+        }
+    
+        #scholarship-table th {
+          background-color: #f2f2f2;
+          font-size: 22px;
+        }
+    
+        #scholarship-table tr:nth-child(even) {
+          background-color: #f2f2f2;
+        }
+    
+        #scholarship-table tr:hover {
+          background-color: #ddd;
+        }
+    
+        #search-form {
+          margin-bottom: 20px;
+        }
+    
+        #search-form label {
+          margin-right: 10px;
+        }
+    
+        #search-form input[type="text"],
+        #search-form input[type="date"] {
+          margin-right: 10px;
+          padding: 5px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+    
+        #search-form button {
+          padding: 5px 10px;
+          background-color: rgb(66,43,114);
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          width: auto;
+          height: 30px;
+          font-size: 20px;
+        }
+    
+        #search-form button:hover {
+          background-color: #333;
+          text-transform: uppercase;
+        }
+    
+        button a {
+          color: white;
+          padding: 2px;
+          text-decoration: none;
+        }
+        th{
+                text-align: justify;
+              }
+        td {
+          background-color: rgb(162, 167, 241);
+          box-shadow: 10px 16px 16px #422b72;
+          font-size: 20px;
+          padding: 15px;
+          color: black;
+        }
+    
+        button {
+          background-color: rgb(66, 43, 114);
+          color: white;
+          width: auto;
+          height: 30px;
+          padding: 2px;
+          font-size: 20px;
+        }
+    
+        button:hover {
+          text-transform: uppercase;
+        }
+      </style>  
+</body>
+</html>

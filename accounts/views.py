@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from .models import *
 from .forms import  CreateUserForm
 
-def registerPage(request):
+# function to register new users
+def register_page(request):
 	if request.user.is_authenticated:
 		return redirect('login')
 	else:
@@ -19,28 +20,33 @@ def registerPage(request):
 		context = {'form':form}
 		return render(request, 'register.html', context)
 
-def loginPage(request):
-	if request.user.is_authenticated:
-		return redirect('login')
-	else:
-		if request.method == 'POST':
-			username = request.POST.get('username')
-			password =request.POST.get('password')
-			user = authenticate(request, username=username, password=password)
-			if user is not None:
-				login(request, user)
-				return redirect('home')
-			else:
-				messages.info(request, 'Username OR password is incorrect')
-		context = {}
-		return render(request, 'login.html', context)
-	
-def logoutUser(request):
+def login_page(request):
+    if request.user.is_authenticated:
+        return redirect('scholarships')  # Redirect logged-in users to scholarships page
+
     if request.method == 'POST':
-        return redirect('login')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            if user.groups.filter(name='Admin').exists():
+                return redirect('admin_scholarships_view')  # Redirect users in admin group to admin scholarship view
+            else:
+                return redirect('scholarships')  # Redirect users not in admin group to scholarship list
+        else:
+            messages.info(request, 'Username or password is incorrect')
+
+    return render(request, 'login.html')
+	
+	# function to logout the user
+def logout_user(request):
+    logout(request)
+    # Redirect to a page after logout
+    return redirect('login') 
 
 
-def home(request):
-    return render(request,"home.html")
+
         
 

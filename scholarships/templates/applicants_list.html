@@ -1,4 +1,4 @@
-<!-- applicants_list.html -->
+v<!-- applicants_list.html -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,11 +6,15 @@
 </head>
 <body>
     <h2>Scholarship Applicants</h2>
-    <th> <a href="{% url 'approved_list'%}"><button>View approved</button></a></th>
 
-    <table>
+
+
+    <table id="scholarship-table">
 
         <thead>
+            <tr>
+                <th> <a href="{% url 'approved_list'%}"><button>View approved</button></a></th>
+            </tr>
 
             <tr>        
 
@@ -33,20 +37,67 @@
             {% endfor %}
         </tbody>
     </table>
-    <style>
-            table, td, th {
-      border: 1px solid #ddd;
-      text-align: left;
-      padding-left: 48px;
-    }
-    th, td {
-      padding: 15px;
-    }
-    th{
-      background-color: rgb(221, 168, 226);
-     
-      color: black;
-    }
-    </style>
+  </table>
+</div>
+<style>
+.scholarship-table {
+    margin: 20px;
+  }
+
+  #scholarship-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  #scholarship-table th,
+  #scholarship-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  #scholarship-table th {
+    background-color: #f2f2f2;
+    font-size: 22px;
+  }
+
+  #scholarship-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  #scholarship-table tr:hover {
+    background-color: #ddd;
+  }
+  button a {
+    color: white;
+    padding: 2px;
+    text-decoration: none;
+  }
+
+  th{
+            text-align: justify;
+          }
+  td {
+    background-color: rgb(162, 167, 241);
+    box-shadow: 10px 16px 16px #422b72;
+    font-size: 20px;
+    padding: 15px;
+    color: black;
+  }
+
+  button {
+    background-color: rgb(66, 43, 114);
+    color: white;
+    width: auto;
+    height: 30px;
+    padding: 2px;
+    font-size: 20px;
+  }
+
+  button:hover {
+    text-transform: uppercase;
+  }
+
+
+  </style>
 </body>
 </html>
