@@ -3,9 +3,9 @@
         <title>User Profile</title>
     </head>
     <body>
-        <h1>Welcome, {{ user_profile.user.username }}</h1>
+        <h1>Welcome, {{ user.username }}</h1>
         <p>Bio: {{ user_profile.telephone_number }}</p>
-        <h2>Approved Application</h2>
+        <h2>Approved Application for this user</h2>
         <table id="scholarship-table">
             <thead>
               <tr>
@@ -13,12 +13,15 @@
                 <th>Description</th>
                 <th>Eligibility</th>
                 <th>Application Deadline</th>
-                <th>Action</th>
+             
               </tr>
             </thead>
         <tbody>
         {% for scholarship in approved_scholarships %}        <tr>
-            <li>{{ scholarship.name }}</li>
+         <td> {{ scholarship.id }}</td>  
+         <td> {{ scholarship.scholarship.name }}</td> 
+         <td> {{ scholarship.scholarship.eligibility_criteria}}</td>
+         <td> {{ scholarship.scholarship.application_deadline}}</td> 
         </tr>
             {% endfor %}
         </tbody>

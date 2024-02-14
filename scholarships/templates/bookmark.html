@@ -18,13 +18,13 @@
           </tr>
         </thead>
     <tbody>
-        {% for scholarship in bookmarked_scholarships %}
+        {% for bookmarks in bookmarked_scholarships %}
             <tr>
-            <td>ID:{{ scholarship.id }}</td>
-            <td>Title:{{ scholarship.name }}</td>
-            <td>Description:{{ scholarship.description }}</td>
-            <td>Eligibility:{{ scholarship.eligibility_criteria }}</td>
-            <td>Deadline{{ scholarship.application_deadline }}</td>
+            <td>ID:{{ bookmarks.id }}</td>
+            <td>Title:{{ bookmarks.scholarship.name }}</td>
+            <td>Description:{{ bookmarks.scholarship.description }}</td>
+            <td>Eligibility:{{ scholarship.scholarship.eligibility_criteria }}</td>
+            <td>Deadline{{ scholarship.scholarship.application_deadline }}</td>
 
     </tr>
         {% endfor %}

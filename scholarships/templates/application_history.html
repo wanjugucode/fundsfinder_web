@@ -3,27 +3,35 @@
         <title>User Profile</title>
     </head>
     <body>
-        <h1>Welcome, {{ user_profile.user.username }}</h1>
-        <p>Bio: {{ user_profile.telephone_number }}</p>
-        <h2>Application History</h2>
+        <h1>Application History for {{ user.username }}</h1>
+        <h2>Welcome, {{ user.username }}</h2>
+        <p>Bio: {{ user.email }} </p>
         <table id="scholarship-table">
             <thead>
               <tr>
-                <th>Name</th>
+                <th>Id</th>
                 <th>Description</th>
                 <th>Eligibility</th>
                 <th>Application Deadline</th>
                 <th>Action</th>
               </tr>
             </thead>
-        <tbody>
- 
-    {% for application in user_applications %}     
-        <tr>
-        <li>{{ application }}</li>
-        </tr>
-            {% endfor %}
-        </tbody>
+            <tbody>
+              {% for application in user_applications %}
+                  <tr>
+                    <td>{{ application.id }}</td> <!-- Assuming id is a field in your ScholarshipApplication model -->
+                    <td>{{ application.scholarship.name }}</td> <!-- Assuming scholarship is a ForeignKey field linking to Scholarship model -->
+                    <td>Description:{{ application.scholarship.description }}</td>
+                    <td>Eligibility:{{ application.scholarship.eligibility_criteria }}</td>
+                    <td>Deadline{{ application.scholarship.application_deadline }}</td>
+        
+                  </tr>
+              {% empty %}
+                  <tr>
+                      <td colspan="3">No scholarship applications found.</td>
+                  </tr>
+              {% endfor %}
+          </tbody>
         </table>
         <style>
     

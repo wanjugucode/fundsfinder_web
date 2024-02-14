@@ -1,4 +1,3 @@
-v<!-- applicants_list.html -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,18 +5,12 @@ v<!-- applicants_list.html -->
 </head>
 <body>
     <h2>Scholarship Applicants</h2>
-
-
-
     <table id="scholarship-table">
-
         <thead>
             <tr>
                 <th> <a href="{% url 'approved_list'%}"><button>View approved</button></a></th>
             </tr>
-
             <tr>        
-
                 <th>Name</th>
                 <th>Email</th>
                 <th>Application Date</th>
@@ -25,14 +18,14 @@ v<!-- applicants_list.html -->
                 <th>Action</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody>                    
             {% for application in scholarship_applications %}
                 <tr>
-                    <td>{{ application.name }}</td>
-                    <td>{{ application.email }}</td>
-                    <td>{{ application.created_at }}</td>
-                    <td>{% if application.is_approved %}Approved{% else %}Not Approved{% endif %}</td>
-                    <td><a href="{% url 'approve_scholarship' id=application.id%}"><button>Approve</button></a></td>
+                  <td>{{ user.username }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ application.created_at }}</td>
+                  <td>{% if application.is_approved %}Approved{% else %}Not Approved{% endif %}</td>
+                  <td><a href="{% url 'approve_scholarship' id=application.id%}"><button>Approve</button></a></td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -43,27 +36,22 @@ v<!-- applicants_list.html -->
 .scholarship-table {
     margin: 20px;
   }
-
   #scholarship-table {
     width: 100%;
     border-collapse: collapse;
   }
-
   #scholarship-table th,
   #scholarship-table td {
     border: 1px solid #ddd;
     padding: 8px;
   }
-
   #scholarship-table th {
     background-color: #f2f2f2;
     font-size: 22px;
   }
-
   #scholarship-table tr:nth-child(even) {
     background-color: #f2f2f2;
   }
-
   #scholarship-table tr:hover {
     background-color: #ddd;
   }
@@ -96,8 +84,6 @@ v<!-- applicants_list.html -->
   button:hover {
     text-transform: uppercase;
   }
-
-
   </style>
 </body>
 </html>

@@ -1,4 +1,4 @@
-import os
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render,redirect
 from .forms import *
 from .models import Scholarships
@@ -9,8 +9,6 @@ from userprofile.models import UserProfile
 from .models import ScholarshipApplication
 
 # Create your views here.
-
-
 @login_required
 def add_scholarship(request):
     if request.method == "POST":
@@ -22,19 +20,16 @@ def add_scholarship(request):
             print(form.errors)
     else:
         form = ScholarshipAdditionForm()
-
     return render(request, "add_scholarship.html", {"form": form})
 
 @login_required
 def scholarships_list(request):
     today = date.today()
     scholarships = Scholarships.objects.all()
-
     # Retrieve the search query parameters from the request
     search_name = request.GET.get('name')
     search_description = request.GET.get('description')
     search_deadline = request.GET.get('deadline')
-
     # Filtering scholarships based on search criteria
     if search_name:
         scholarships = scholarships.filter(name__icontains=search_name)
@@ -52,13 +47,12 @@ def scholarships_list(request):
         scholarship.has_applied = ScholarshipApplication.objects.filter(scholarship=scholarship).exists()
         scholarship.has_approved = ApprovedScholarship.objects.filter(original_application__scholarship=scholarship).exists()
         scholarship.has_expired = scholarship.application_deadline.date() < datetime.now().date()
-
     return render(request, "scholarship_list.html", {"scholarships": scholarships})
+
 @login_required
 def admin_scholarships_view(request):
     scholarships=Scholarships.objects.all()
     return render(request,"admin_scholarships_view.html",{ "scholarship":scholarships})
-
 
 @login_required
 def edit_scholarship(request, id):  
@@ -71,26 +65,40 @@ def edit_scholarship(request, id):
         form = ScholarshipAdditionForm(instance=scholarship)
 
     return render(request, 'edit_scholarship.html', {"form": form})
+
 @login_required
 def remove_scholarship(request, id):
     scholarship = Scholarships.objects.get(id=id)
-
     if request.method == "POST":
         scholarship.delete()
-
         return redirect('admin_scholarships_view')  
     else:
         return render(request, 'remove_scholarship.html', {'scholarship': scholarship})
+
+
 @login_required
 def apply_scholarship(request):
     if request.method == 'POST':
         form = ScholarshipApplicationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('scholarships')  
+            # Retrieve the UserProfile instance associated with the logged-in user
+            user_profile = request.user.userprofile  # Assuming 'userprofile' is the ForeignKey field linking User and UserProfile
+
+            # Create a new instance of ScholarshipApplication with the form data
+            application = form.save(commit=False)
+
+            # Associate the application with the user's profile
+            application.userprofile = user_profile  # Assuming 'userprofile' is the ForeignKey field in ScholarshipApplication
+            
+            # Save the application only if a scholarship is selected in the form
+            if application.scholarship:
+                application.save()
+                return redirect('scholarships')  # Redirect to a success page or another appropriate location
+            else:
+                # Add error handling for case where no scholarship is selected
+                form.add_error('scholarship', 'Please select a scholarship.')
     else:
         form = ScholarshipApplicationForm()
-
     return render(request, 'apply_scholarship.html', {'form': form})
 @login_required
 def applicants_list(request):
@@ -101,64 +109,61 @@ def applicants_list(request):
 def approve_scholarship(request, id):
     # Get the scholarship application or return a 404 response if not found
     application = get_object_or_404(ScholarshipApplication, id=id)
-
     # Check if the application is not already approved
     if not application.is_approved:
         # Mark the original application as approved
         application.is_approved = True
         application.save()
-
         # Create a corresponding entry in the ApprovedScholarship model
         ApprovedScholarship.objects.create(original_application=application)
-
     # Redirect to the list of applicants after approval
     return redirect('applicants_list')
+
 @login_required
 def approved_list(request):
     approved_applications = ApprovedScholarship.objects.all()
     return render(request, 'approved_list.html', {'approved_applications': approved_applications})
 
-@login_required
-def bookmark_scholarship(request):
+def bookmark_scholarship(request, scholarship_id):
     try:
-        scholarship = Scholarships.objects.all()
+        # Retrieve the scholarship based on the provided scholarship_id
+        scholarship = get_object_or_404(Scholarships, id=scholarship_id)
         user_profile = UserProfile.objects.get(user=request.user)
-        
         # Check if the scholarship is already bookmarked by the user
         if user_profile.bookmarks.filter(scholarship=scholarship).exists():
             # Scholarship is already bookmarked, no need to create a new bookmark
             pass
         else:
             # Scholarship is not bookmarked, create a new bookmark
-            Bookmark.objects.create(user=user_profile, scholarship=scholarship)
+            Bookmark.objects.create(userprofile=user_profile, scholarship=scholarship)
     except Scholarships.DoesNotExist:
         # Handle case where scholarship with given ID does not exist
         pass
-    
-    # Retrieve all bookmarked scholarships for the user
-    bookmarked_scholarships = user_profile.bookmarks.all()
+    # Redirect back to the bookmarks page
+    return redirect('bookmarks')
 
-    # Pass the bookmarked scholarships to the template context
-    return render(request, 'bookmark.html', {'bookmarked_scholarships': bookmarked_scholarships}) # Assuming 'bookmarks' is the URL name for the bookmarks page
 @login_required
 def bookmarks(request):
     user_profile = UserProfile.objects.get(user=request.user)
     bookmarked_scholarships = user_profile.bookmarks.all()
     return render(request, 'bookmark.html', {'user_profile': user_profile, 'bookmarked_scholarships': bookmarked_scholarships})
 
-
 @login_required
 def application_history(request):
-    # Retrieve the UserProfile instance associated with the current user
-    user_profile = UserProfile.objects.get(user=request.user)
-    
-    # Retrieve all scholarship applications made by the current user
-    user_applications = ScholarshipApplication.objects.filter(user=user_profile)
-    
-    # Optionally, you can order the applications by submission date or any other relevant field
-    user_applications = user_applications.order_by('-created_at')
+    try:
+        # Retrieve all scholarship applications
+        all_applications = ScholarshipApplication.objects.all()
 
-    return render(request, 'application_history.html', {'user_applications': user_applications})
+        # Optionally, you can order the applications by submission date or any other relevant field
+        all_applications = all_applications.order_by('-created_at')
+
+        # Get the user object associated with the current user profile
+        user = request.user
+
+        return render(request, 'application_history.html', {'user_applications': all_applications, 'user': user})
+    except ScholarshipApplication.DoesNotExist:
+        # Handle case where no scholarship applications exist
+        return HttpResponse("No scholarship applications found.")
 
 @login_required
 def approved_scholarships(request):
@@ -168,7 +173,7 @@ def approved_scholarships(request):
         
         # Retrieve approved scholarships for the current user
         user_approved_scholarships =ScholarshipApplication.objects.filter(
-            user=user_profile,  # Filter by user profile
+            userprofile=user_profile,  # Filter by user profile
             is_approved=True  # Filter by approval status
         )
     except UserProfile.DoesNotExist:

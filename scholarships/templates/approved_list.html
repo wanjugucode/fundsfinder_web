@@ -18,8 +18,8 @@
         <tbody>
             {% for approved_application in approved_applications %}
             <tr>
-                <td>{{ approved_application.original_application.user.username }}</td>
-                <td>{{ approved_application.original_application.user.email }}</td>
+                <td>{{ approved_application.original_application.userprofile.user.username }}</td>
+                <td>{{ approved_application.original_application.userprofile.user.email  }}</td>
                 <td>{{ approved_application.original_application.created_at }}</td>
                 <td>Approved</td>
             </tr>

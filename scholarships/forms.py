@@ -8,4 +8,4 @@ class ScholarshipAdditionForm(forms.ModelForm):
 class ScholarshipApplicationForm(forms.ModelForm):
     class Meta:
         model = ScholarshipApplication
-        fields = [ 'essay'] 
+        fields = [ 'essay','scholarship'] 
