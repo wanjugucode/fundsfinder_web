@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render,redirect
+from notifications.models import Notification
 from .forms import *
 from .models import Scholarships
 from django.contrib.auth.decorators import login_required
@@ -27,6 +28,8 @@ def scholarships_list(request):
     today = date.today()
     scholarships = Scholarships.objects.all()
     # Retrieve the search query parameters from the request
+    user_notifications = Notification.objects.filter(userprofile=request.user.userprofile)
+
     search_name = request.GET.get('name')
     search_description = request.GET.get('description')
     search_deadline = request.GET.get('deadline')
@@ -41,13 +44,19 @@ def scholarships_list(request):
             search_deadline = datetime.strptime(search_deadline, '%Y-%m-%d').date()
             scholarships = scholarships.filter(application_deadline=search_deadline)
         except ValueError:
-            # Handle invalid date format
             pass
+    
     for scholarship in scholarships:
         scholarship.has_applied = ScholarshipApplication.objects.filter(scholarship=scholarship).exists()
         scholarship.has_approved = ApprovedScholarship.objects.filter(original_application__scholarship=scholarship).exists()
         scholarship.has_expired = scholarship.application_deadline.date() < datetime.now().date()
-    return render(request, "scholarship_list.html", {"scholarships": scholarships})
+    
+    context = {
+        'scholarships': scholarships,
+        'notifications': user_notifications 
+    }
+    return render(request, 'scholarship_list.html', context)
+
 
 @login_required
 def admin_scholarships_view(request):

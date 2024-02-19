@@ -1,3 +1,5 @@
+
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -10,7 +12,9 @@
 </head>
 <body>
   <div class="scholarship-table">
-    <button><a href="{}"></a></button>
+    {% include 'new_scholarship_notifications.html' %}
+
+    <button><a href="{}">My profile</a></button>
 
     <form id="search-form" action="{% url 'scholarships' %}" method="GET">
       <label for="name">Search by Title:</label>
@@ -80,6 +84,7 @@
           </tr>
         {% endfor %}
       </tbody>
+
     </table>
   </div>
 
