@@ -4,10 +4,12 @@ from notifications.models import Notification
 from .forms import *
 from .models import Scholarships
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from datetime import datetime,date
 from .models import Scholarships, Bookmark
 from userprofile.models import UserProfile  
-from .models import ScholarshipApplication
+from .models import ScholarshipApplication,ScholarshipComment, ScholarshipRating
+
 
 # Create your views here.
 @login_required
@@ -22,14 +24,10 @@ def add_scholarship(request):
     else:
         form = ScholarshipAdditionForm()
     return render(request, "add_scholarship.html", {"form": form})
-
 @login_required
 def scholarships_list(request):
-    today = date.today()
     scholarships = Scholarships.objects.all()
     # Retrieve the search query parameters from the request
-    user_notifications = Notification.objects.filter(userprofile=request.user.userprofile)
-
     search_name = request.GET.get('name')
     search_description = request.GET.get('description')
     search_deadline = request.GET.get('deadline')
@@ -40,28 +38,35 @@ def scholarships_list(request):
         scholarships = scholarships.filter(description__icontains=search_description)
     if search_deadline:
         try:
-            # Assuming the search query is a date string in YYYY-MM-DD format
             search_deadline = datetime.strptime(search_deadline, '%Y-%m-%d').date()
             scholarships = scholarships.filter(application_deadline=search_deadline)
         except ValueError:
             pass
     
+    scholarship_data = []
     for scholarship in scholarships:
         scholarship.has_applied = ScholarshipApplication.objects.filter(scholarship=scholarship).exists()
         scholarship.has_approved = ApprovedScholarship.objects.filter(original_application__scholarship=scholarship).exists()
         scholarship.has_expired = scholarship.application_deadline.date() < datetime.now().date()
-    
+        # Fetch comments and ratings for each scholarship
+        comments = ScholarshipComment.objects.filter(scholarship=scholarship)
+        ratings = ScholarshipRating.objects.filter(scholarship=scholarship)
+        scholarship_data.append({
+            'scholarship': scholarship,
+            'comments': comments,
+            'ratings': ratings
+        })
+
     context = {
-        'scholarships': scholarships,
-        'notifications': user_notifications 
+        'scholarship_data': scholarship_data,
+        'notifications': Notification.objects.filter(userprofile=request.user.userprofile)
     }
     return render(request, 'scholarship_list.html', context)
 
-
 @login_required
 def admin_scholarships_view(request):
-    scholarships=Scholarships.objects.all()
-    return render(request,"admin_scholarships_view.html",{ "scholarship":scholarships})
+    scholarships = Scholarships.objects.all()
+    return render(request, "admin_scholarships_view.html", { "scholarships": scholarships})
 
 @login_required
 def edit_scholarship(request, id):  
@@ -72,7 +77,6 @@ def edit_scholarship(request, id):
             form.save()       
     else:
         form = ScholarshipAdditionForm(instance=scholarship)
-
     return render(request, 'edit_scholarship.html', {"form": form})
 
 @login_required
@@ -84,7 +88,6 @@ def remove_scholarship(request, id):
     else:
         return render(request, 'remove_scholarship.html', {'scholarship': scholarship})
 
-
 @login_required
 def apply_scholarship(request):
     if request.method == 'POST':
@@ -92,13 +95,11 @@ def apply_scholarship(request):
         if form.is_valid():
             # Retrieve the UserProfile instance associated with the logged-in user
             user_profile = request.user.userprofile  # Assuming 'userprofile' is the ForeignKey field linking User and UserProfile
-
             # Create a new instance of ScholarshipApplication with the form data
             application = form.save(commit=False)
-
             # Associate the application with the user's profile
             application.userprofile = user_profile  # Assuming 'userprofile' is the ForeignKey field in ScholarshipApplication
-            
+
             # Save the application only if a scholarship is selected in the form
             if application.scholarship:
                 application.save()
@@ -190,3 +191,98 @@ def approved_scholarships(request):
         user_approved_scholarships = []
 
     return render(request, 'approved_application.html', {'approved_scholarships': user_approved_scholarships})
+
+def add_comment(request, scholarship_id):
+    scholarship = Scholarships.objects.get(id=scholarship_id)
+    if request.method == 'POST':
+        form = CommentForm(request.POST, request.FILES)
+        if form.is_valid():
+            comment = form.cleaned_data['comment']
+            ScholarshipComment.objects.create(user=request.user, scholarship=scholarship, comment=comment)
+            return redirect('scholarships')
+    else:
+        form = CommentForm()
+    return render(request, 'add_comment.html', {'form': form})
+
+def add_rating(request, scholarship_id):
+    scholarship = Scholarships.objects.get(id=scholarship_id)
+    if request.method == 'POST':
+        form = RatingForm(request.POST, request.FILES)
+        if form.is_valid():
+            rating = form.cleaned_data['rating']
+            ScholarshipRating.objects.create(user=request.user, scholarship=scholarship, rating=rating)
+            return redirect('scholarships')
+    else:
+        form = RatingForm()
+    return render(request, 'add_rating.html', {'form': form})
+
+@login_required
+def edit_comment(request, comment_id):
+    try:
+        comment = ScholarshipComment.objects.get(id=comment_id)
+        # Check if the user is the owner of the comment
+        if comment.user == request.user:
+            if request.method == 'POST':
+                form = CommentForm(request.POST, instance=comment)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, 'Comment updated successfully.')
+                    return redirect('scholarships')
+            else:
+                form = CommentForm(instance=comment)
+            return render(request, 'edit_comment.html', {'form': form})
+        else:
+            messages.error(request, 'You do not have permission to edit this comment.')
+    except ScholarshipComment.DoesNotExist:
+        messages.error(request, 'Comment does not exist.')
+    
+    return redirect('scholarships')
+
+@login_required
+def delete_comment(request, comment_id):
+    try:
+        comment = ScholarshipComment.objects.get(id=comment_id)
+        # Check if the user is the owner of the comment
+        if comment.user == request.user:
+            comment.delete()
+            messages.success(request, 'Comment deleted successfully.')
+        else:
+            messages.error(request, 'You do not have permission to delete this comment.')
+    except ScholarshipComment.DoesNotExist:
+        messages.error(request, 'Comment does not exist.')
+    
+    return redirect('scholarships')
+@login_required
+def edit_rating(request, rating_id):
+    rating = get_object_or_404(ScholarshipRating, id=rating_id)
+    if rating.user == request.user:
+        if request.method == 'POST':
+            form = RatingForm(request.POST)
+            if form.is_valid():
+                rating.rating = form.cleaned_data['rating']
+                rating.save()
+                messages.success(request, 'Rating updated successfully.')
+                return redirect('scholarships')
+        else:
+            form = RatingForm(initial={'rating': rating.rating})
+        return render(request, 'edit_rating.html', {'form': form})
+    else:
+        messages.error(request, 'You do not have permission to edit this rating.')
+        return redirect('scholarships')
+    
+
+
+@login_required
+def delete_rating(request, rating_id):
+    try:
+        rating = ScholarshipRating.objects.get(id=rating_id)
+        # Check if the user is the owner of the rating
+        if rating.user == request.user:
+            rating.delete()
+            messages.success(request, 'Rating deleted successfully.')
+        else:
+            messages.error(request, 'You do not have permission to delete this Rating.')
+    except ScholarshipRating.DoesNotExist:
+        messages.error(request, 'Rating does not exist.')
+    
+    return redirect('scholarships')

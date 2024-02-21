@@ -34,3 +34,15 @@ class ApprovedScholarship(models.Model):
 class Bookmark(models.Model):
     userprofile = models.ForeignKey('userprofile.UserProfile', on_delete=models.CASCADE, related_name='bookmarks', null=True)
     scholarship = models.ForeignKey(Scholarships, on_delete=models.CASCADE, related_name='bookmarks', null=True)
+
+class ScholarshipComment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    scholarship = models.ForeignKey(Scholarships, on_delete=models.CASCADE, related_name='comments')
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class ScholarshipRating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    scholarship = models.ForeignKey(Scholarships, on_delete=models.CASCADE, related_name='ratings')
+    rating = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)

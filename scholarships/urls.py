@@ -16,7 +16,11 @@ urlpatterns=[
     path('bookmark/<int:scholarship_id>/', views.bookmark_scholarship, name='bookmark_scholarship'),
     path('applicant_history/',views.application_history, name='applicant_history'),
     path('approved_application/',views.approved_scholarships, name='approved_application'),
-
-
-
+    path('add_comment/<int:scholarship_id>/', views.add_comment, name='add_comment'),
+    path('add_rating/<int:scholarship_id>/', views.add_rating, name='add_rating'),
+    path('edit_comment/<int:comment_id>/', views.edit_comment, name='edit_comment'),
+    path('delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
+    path('edit_rating/<int:rating_id>/', views.edit_rating, name='edit_rating'),
+    path('delete_rating/<int:rating_id>/', views.delete_rating, name='delete_rating')
+    
     ]

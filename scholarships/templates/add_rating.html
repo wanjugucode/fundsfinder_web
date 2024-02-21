@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Rating</title>
+</head>
+<body>
+    <h2>Add Rating</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="rating">Rating:</label>
+        <select id="rating" name="rating">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

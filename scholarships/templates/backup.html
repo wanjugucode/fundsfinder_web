@@ -1,0 +1,207 @@
+
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'main.css' %}">
+  <title>Scholarships</title>
+</head>
+<body>
+  <div class="scholarship-table">
+    {% include 'new_scholarship_notifications.html' %}
+
+    <button><a href="{}">My profile</a></button>
+
+    <form id="search-form" action="{% url 'scholarships' %}" method="GET">
+      <label for="name">Search by Title:</label>
+      <input type="text" name="name" id="name" placeholder="Search by title">
+
+      <label for="description">Search by Description:</label>
+      <input type="text" name="description" id="description" placeholder="Search by description">
+
+      <label for="deadline">Search by Deadline:</label>
+      <input type="date" name="deadline" id="deadline">
+
+      <button type="submit">Search</button>
+      <th><a href="{% url 'logout' %}">Logout</a></th>
+
+    </form>
+
+    <table id="scholarship-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Eligibility</th>
+          <th>Application Deadline</th>
+          <th>Status</th>
+          <th>Bookmark</th>
+          <th>Comment</th>
+          <th>Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for data in scholarship_data %}
+        <tr>
+            <td>{{ data.scholarship.name }}</td>
+            <td>{{ data.scholarship.description }}</td>
+            <td>{{ data.scholarship.eligibility_criteria }}</td>
+            <td>{{ data.scholarship.application_deadline }}</td>
+            <td>
+                {% if data.scholarship.applications.all %}
+                    {% for application in data.scholarship.applications.all %}
+                        {% if application.is_approved %}
+                            <button>Approved</button>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    {% if data.scholarship.has_expired %}
+                        <button>Expired</button>
+                    {% elif data.scholarship.has_applied %}
+                        <button>Applied</button>
+                    {% else %}
+                        <a href="{% url 'applyscholarship' %}"><button>Apply</button></a>
+                    {% endif %}
+                {% endif %}
+            </td>
+            <td><a href="{% url 'bookmark_scholarship' scholarship_id=data.scholarship.id %}">Bookmark</a></td>
+            <td><a href="{% url 'add_comment' scholarship_id=data.scholarship.id %}">Comment</a></td>
+            <td><a href="{% url 'add_rating' scholarship_id=data.scholarship.id %}">Rate</a></td>
+            <tr>
+            <td>
+                <ul>
+                    {% for comment in data.comments %}
+                        <li>{{ comment.user.username }} - {{ comment.comment }}</li>
+                    {% empty %}
+                        <li>No comments yet.</li>
+                    {% endfor %}
+                </ul>
+            </td>
+          </tr>
+          <tr>
+
+            <td>
+                <ul>
+                    {% for rating in data.ratings %}
+                        <li>{{ rating.user.username }} - {{ rating.rating }}</li>
+                    {% empty %}
+                        <li>No ratings yet.</li>
+                    {% endfor %}
+                </ul>
+            </td>
+          </tr>
+
+          </tr>
+        </tr>
+        {% endfor %}
+        
+      </tbody>
+    </table>
+    
+  </div>
+
+  <style>
+
+    .scholarship-table {
+      margin: 20px;
+    }
+
+    #scholarship-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    #scholarship-table th,
+    #scholarship-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    #scholarship-table th {
+      background-color: #f2f2f2;
+      font-size: 22px;
+    }
+
+    #scholarship-table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    #scholarship-table tr:hover {
+      background-color: #ddd;
+    }
+
+    #search-form {
+      margin-bottom: 20px;
+    }
+
+    #search-form label {
+      margin-right: 10px;
+    }
+
+    #search-form input[type="text"],
+    #search-form input[type="date"] {
+      margin-right: 10px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    #search-form button {
+      padding: 5px 10px;
+      background-color: rgb(66,43,114);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: auto;
+      height: 30px;
+      font-size: 20px;
+    }
+
+    #search-form button:hover {
+      background-color: #333;
+      text-transform: uppercase;
+    }
+
+    button a {
+      color: white;
+      padding: 2px;
+      text-decoration: none;
+    }
+    th{
+            text-align: justify;
+          }
+    td {
+      background-color: rgb(162, 167, 241);
+      box-shadow: 10px 16px 16px #422b72;
+      font-size: 20px;
+      padding: 15px;
+      color: black;
+    }
+
+    button {
+      background-color: rgb(66, 43, 114);
+      color: white;
+      width: auto;
+      height: 30px;
+      padding: 2px;
+      font-size: 20px;
+    }
+
+    button:hover {
+      text-transform: uppercase;
+    }
+  </style>  
+
+
+
+
+
+
+</body>
+</html>

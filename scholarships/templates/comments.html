@@ -8,25 +8,6 @@
     <title>Document</title>
 </head>
 <body>
-  <div class="scholarship-table">
-    {% include 'new_scholarship_notifications.html' %}
-
-    <button><a href="{}">My profile</a></button>
-
-    <form id="search-form" action="{% url 'scholarships' %}" method="GET">
-      <label for="name">Search by Title:</label>
-      <input type="text" name="name" id="name" placeholder="Search by title">
-
-      <label for="description">Search by Description:</label>
-      <input type="text" name="description" id="description" placeholder="Search by description">
-
-      <label for="deadline">Search by Deadline:</label>
-      <input type="date" name="deadline" id="deadline">
-
-      <button type="submit">Search</button>
-      <th><a href="{% url 'logout' %}">Logout</a></th>
-
-    </form>
     <table id="scholarship-table">
         <thead>
           <tr>
@@ -41,43 +22,51 @@
           </tr>
         </thead>
         <tbody>
-          {% for data in scholarship_data %}
-          <tr>
-              <td>{{ data.scholarship.name }}</td>
-              <td>{{ data.scholarship.description }}</td>
-              <td>{{ data.scholarship.eligibility_criteria }}</td>
-              <td>{{ data.scholarship.application_deadline }}</td>
+          {% for scholarship in scholarships %}
+            <tr>
+              <td>{{ scholarship.name }}</td>
+              <td>{{ scholarship.description }}</td>
+              <td>{{ scholarship.eligibility_criteria }}</td>
+              <td>{{ scholarship.application_deadline }}</td>
               <td>
-                  {% if data.scholarship.applications.all %}
-                      {% for application in data.scholarship.applications.all %}
-                          {% if application.is_approved %}
-                              <button>Approved</button>
-                          {% endif %}
-                      {% endfor %}
+                {% if scholarship.applications.all %}
+                  {% for application in scholarship.applications.all %}
+                    {% if application.is_approved %}
+                      <button>Approved</button>
+                      {% comment %} Stop looping after finding an approved application {% endcomment %}
+                    {% endif %}
+                  {% empty %}
+                    {% if scholarship.has_expired %}
+                      <button>Expired</button>
+                    {% elif scholarship.has_applied %}
+                      <button>Applied</button>
+                    {% else %}
+                      <a href="{% url 'applyscholarship' %}"><button>Apply</button></a>
+                    {% endif %}
+                  {% endfor %}
+                {% else %}
+                  {% if scholarship.has_expired %}
+                    <button>Expired</button>
+                  {% elif application.is_approved %}
+                    <button>Approved</button>
+                  {% elif scholarship.has_applied %}
+                    <button>Applied</button>
                   {% else %}
-                      {% if data.scholarship.has_expired %}
-                          <button>Expired</button>
-                      {% elif data.scholarship.has_applied %}
-                          <button>Applied</button>
-                      {% else %}
-                          <a href="{% url 'applyscholarship' %}"><button>Apply</button></a>
-                      {% endif %}
+                    <a href="{% url 'applyscholarship' %}"><button>Apply</button></a>
                   {% endif %}
+                {% endif %}
               </td>
-              <td><a href="{% url 'bookmark_scholarship' scholarship_id=data.scholarship.id %}">Bookmark</a></td>
-              <td><a href="{% url 'add_comment' scholarship_id=data.scholarship.id %}">Comment</a></td>
-              <td><a href="{% url 'add_rating' scholarship_id=data.scholarship.id %}">Rate</a></td>
-               </tr>
+              <td><a href="{% url 'bookmark_scholarship' scholarship_id=scholarship.id %}">Bookmark</a></td>
+              <td><a href="{% url 'add_comment' scholarship_id=scholarship.id %}">Comment</a></td>
+              <td><a href="{% url 'add_rating' scholarship_id=scholarship.id %}">Rate</a></td>
+            </tr>
             <tr>
               <td colspan="8">
                 <div>
                   <h4>Comments:</h4>
                   <ul>
                     {% for comment in data.comments %}
-                        <li>{{ comment.user.username }} - {{ comment.comment }}
-                          <a href="{% url 'edit_comment' comment.id %}">edit</a>
-                          <a href="{% url 'delete_comment' comment.id %}">Delete</a>
-                        </li>
+                        <li>{{ comment.user.username }} - {{ comment.comment }}</li>
                     {% empty %}
                         <li>No comments yet.</li>
                     {% endfor %}
@@ -87,11 +76,7 @@
                   <h4>Ratings:</h4>
                   <ul>
                     {% for rating in data.ratings %}
-                        <li>{{ rating.user.username }} - {{ rating.rating }}
-                          <a href="{% url 'edit_rating' rating.id%}">edit</a>
-                          <a href="{% url 'delete_rating' rating.id %}">Delete</a>
-                      
-</li>
+                        <li>{{ rating.user.username }} - {{ rating.rating }}</li>
                     {% empty %}
                         <li>No ratings yet.</li>
                     {% endfor %}
