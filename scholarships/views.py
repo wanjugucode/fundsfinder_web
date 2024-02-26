@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render,redirect
+from django.core.exceptions import ObjectDoesNotExist
 from notifications.models import Notification
 from .forms import *
 from .models import Scholarships
@@ -23,9 +24,15 @@ def add_scholarship(request):
     else:
         form = ScholarshipAdditionForm()
     return render(request, "add_scholarship.html", {"form": form})
+
 @login_required
 def scholarships_list(request):
     scholarships = Scholarships.objects.all()
+    try:
+        user_profile = request.user.userprofile  # Assuming userprofile is related to the User model
+    except ObjectDoesNotExist:
+        user_profile = None
+
     # Retrieve the search query parameters from the request
     search_name = request.GET.get('name')
     search_description = request.GET.get('description')
@@ -44,8 +51,11 @@ def scholarships_list(request):
     
     scholarship_data = []
     for scholarship in scholarships:
-        scholarship.has_applied = ScholarshipApplication.objects.filter(scholarship=scholarship).exists()
-        scholarship.has_approved = ApprovedScholarship.objects.filter(original_application__scholarship=scholarship).exists()
+        scholarship.has_applied = ScholarshipApplication.objects.filter(scholarship=scholarship, userprofile__user=request.user).exists()
+        if user_profile:
+            scholarship.has_approved = ApprovedScholarship.objects.filter(original_application__scholarship=scholarship, original_application__userprofile=user_profile).exists()
+        else:
+            scholarship.has_approved = False
         scholarship.has_expired = scholarship.application_deadline.date() < datetime.now().date()
         # Fetch comments and ratings for each scholarship
         comments = ScholarshipComment.objects.filter(scholarship=scholarship)
@@ -56,13 +66,9 @@ def scholarships_list(request):
             'ratings': ratings
         })
 
-    user_profile = None
-    if hasattr(request.user, 'userprofile'):
-        user_profile = request.user.userprofile
-
     context = {
         'scholarship_data': scholarship_data,
-        'notifications': Notification.objects.filter(userprofile=user_profile)
+        'notifications': Notification.objects.filter(userprofile=request.user.userprofile) if user_profile else None
     }
     return render(request, 'scholarship_list.html', context)
 
@@ -93,44 +99,44 @@ def remove_scholarship(request, id):
         return render(request, 'remove_scholarship.html', {'scholarship': scholarship})
 
 @login_required
-def apply_scholarship(request):
+def apply_scholarship(request, scholarship_id):
+    scholarship = get_object_or_404(Scholarships, id=scholarship_id)
     if request.method == 'POST':
         form = ScholarshipApplicationForm(request.POST)
         if form.is_valid():
-            # Retrieve the UserProfile instance associated with the logged-in user
-            user_profile = request.user.userprofile  # Assuming 'userprofile' is the ForeignKey field linking User and UserProfile
-            # Create a new instance of ScholarshipApplication with the form data
+            user_profile = request.user.userprofile
             application = form.save(commit=False)
-            # Associate the application with the user's profile
-            application.userprofile = user_profile  # Assuming 'userprofile' is the ForeignKey field in ScholarshipApplication
-
-            # Save the application only if a scholarship is selected in the form
-            if application.scholarship:
-                application.save()
-                return redirect('scholarships')  # Redirect to a success page or another appropriate location
-            else:
-                # Add error handling for case where no scholarship is selected
-                form.add_error('scholarship', 'Please select a scholarship.')
+            application.userprofile = user_profile
+            application.scholarship = scholarship
+            application.save()
+            return redirect('scholarships')  # Redirect to a success page or another appropriate location
     else:
-        form = ScholarshipApplicationForm()
-    return render(request, 'apply_scholarship.html', {'form': form})
+        form = ScholarshipApplicationForm(initial={'scholarship': scholarship_id})
+
+    # Include the logged-in user's username, email, and user profile in the context
+    username = request.user.username
+    email = request.user.email
+    user_profile = request.user.userprofile
+    return render(request, 'apply_scholarship.html', {'form': form, 'scholarship': scholarship, 'username': username, 'email': email, 'user_profile': user_profile})
+
+
 @login_required
 def applicants_list(request):
     scholarship_applications = ScholarshipApplication.objects.all()
     return render(request, 'applicants_list.html', {'scholarship_applications': scholarship_applications})
 
 @login_required
-def approve_scholarship(request, id):
-    # Get the scholarship application or return a 404 response if not found
+def scholarship_application_detail(request, id):
     application = get_object_or_404(ScholarshipApplication, id=id)
-    # Check if the application is not already approved
+    return render(request, 'scholarship_application_detail.html', {'application': application})
+
+@login_required
+def approve_scholarship(request, id):
+    application = get_object_or_404(ScholarshipApplication, id=id)
     if not application.is_approved:
-        # Mark the original application as approved
         application.is_approved = True
         application.save()
-        # Create a corresponding entry in the ApprovedScholarship model
         ApprovedScholarship.objects.create(original_application=application)
-    # Redirect to the list of applicants after approval
     return redirect('applicants_list')
 
 @login_required

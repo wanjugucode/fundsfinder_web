@@ -8,7 +8,7 @@ class ScholarshipAdditionForm(forms.ModelForm):
 class ScholarshipApplicationForm(forms.ModelForm):
     class Meta:
         model = ScholarshipApplication
-        fields = [ 'essay','scholarship'] 
+        fields = [ 'essay'] 
 class CommentForm(forms.ModelForm):
     class Meta:
         model = ScholarshipComment

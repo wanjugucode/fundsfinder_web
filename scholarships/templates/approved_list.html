@@ -11,20 +11,24 @@
             <tr>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Gender</th>
                 <th>Application Date</th>
                 <th>Status</th>
             </tr>
         </thead>
         <tbody>
-            {% for approved_application in approved_applications %}
-            <tr>
-                <td>{{ approved_application.original_application.userprofile.user.username }}</td>
-                <td>{{ approved_application.original_application.userprofile.user.email  }}</td>
-                <td>{{ approved_application.original_application.created_at }}</td>
-                <td>Approved</td>
-            </tr>
-        {% endfor %}
-        </tbody>
+          {% for approved_application in approved_applications %}
+              <tr>
+                  <td>{{ approved_application.original_application.userprofile }}</td>
+                  <td>{{ approved_application.original_application.userprofile.contact_email }}</td>
+                  <td>{{ approved_application.original_application.userprofile.gender }}</td>
+                  <td>{{ approved_application.original_application.created_at }}</td>
+                  <td>Approved</td>
+              </tr>
+          {% endfor %}
+      </tbody>
+      
+      
     </table>
     <style>
         .scholarship-table {

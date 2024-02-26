@@ -13,22 +13,25 @@
             <tr>        
                 <th>Name</th>
                 <th>Email</th>
+                <th>Gender</th>
                 <th>Application Date</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>                    
-            {% for application in scholarship_applications %}
-                <tr>
-                  <td>{{ user.username }}</td>
-                  <td>{{ user.email }}</td>
+          {% for application in scholarship_applications %}
+              <tr>
+                  <td>{{ application.userprofile.user.username }}</td>
+                  <td>{{ application.userprofile.contact_email }}</td>
+                  <td>{{ application.userprofile.gender }}</td>
                   <td>{{ application.created_at }}</td>
                   <td>{% if application.is_approved %}Approved{% else %}Not Approved{% endif %}</td>
-                  <td><a href="{% url 'approve_scholarship' id=application.id%}"><button>Approve</button></a></td>
-                </tr>
-            {% endfor %}
-        </tbody>
+                  <td><a href="{% url 'approve_scholarship' id=application.id %}"><button>Approve</button></a></td>
+              </tr>
+          {% endfor %}
+      </tbody>
+      
     </table>
   </table>
 </div>

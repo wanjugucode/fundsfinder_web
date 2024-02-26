@@ -60,5 +60,3 @@ def view_profile(request):
     except ObjectDoesNotExist:
         return redirect('addprofile')
     return render(request, "view_profile.html", {"profile": profile})
-
-
