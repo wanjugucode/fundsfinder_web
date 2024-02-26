@@ -16,3 +16,7 @@ class CommentForm(forms.ModelForm):
 class RatingForm(forms.Form):
     RATING_CHOICES = [(i, i) for i in range(1, 6)]
     rating = forms.ChoiceField(choices=RATING_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+class ReportForm(forms.ModelForm):
+    class Meta:
+        model = ReportInaccuracy
+        fields = ['description']

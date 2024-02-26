@@ -21,6 +21,7 @@ urlpatterns=[
     path('edit_comment/<int:comment_id>/', views.edit_comment, name='edit_comment'),
     path('delete_comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
     path('edit_rating/<int:rating_id>/', views.edit_rating, name='edit_rating'),
-    path('delete_rating/<int:rating_id>/', views.delete_rating, name='delete_rating')
-    
+    path('delete_rating/<int:rating_id>/', views.delete_rating, name='delete_rating'),
+    path('add_report/<int:scholarship_id>/', views.report_inaccuracy, name='add_report'),
+    path('view_report/<int:scholarship_id>/', views.view_report, name='view_report'),
     ]

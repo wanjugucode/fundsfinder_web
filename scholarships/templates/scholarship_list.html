@@ -11,7 +11,7 @@
   <div class="scholarship-table">
     {% include 'new_scholarship_notifications.html' %}
 
-    <button><a href="{}">My profile</a></button>
+    <button><a href="{% url 'viewprofile' %}">My profile</a></button>
 
     <form id="search-form" action="{% url 'scholarships' %}" method="GET">
       <label for="name">Search by Title:</label>
@@ -38,6 +38,7 @@
             <th>Bookmark</th>
             <th>Comment</th>
             <th>Rate</th>
+            <th>Report</th>
           </tr>
         </thead>
         <tbody>
@@ -67,9 +68,10 @@
               <td><a href="{% url 'bookmark_scholarship' scholarship_id=data.scholarship.id %}">Bookmark</a></td>
               <td><a href="{% url 'add_comment' scholarship_id=data.scholarship.id %}">Comment</a></td>
               <td><a href="{% url 'add_rating' scholarship_id=data.scholarship.id %}">Rate</a></td>
-               </tr>
+              <td><a href="{% url 'add_report' scholarship_id=data.scholarship.id %}">Report</a></td>
+            
             <tr>
-              <td colspan="8">
+              <td colspan="9">
                 <div>
                   <h4>Comments:</h4>
                   <ul>
@@ -90,14 +92,19 @@
                         <li>{{ rating.user.username }} - {{ rating.rating }}
                           <a href="{% url 'edit_rating' rating.id%}">edit</a>
                           <a href="{% url 'delete_rating' rating.id %}">Delete</a>
-                      
-</li>
+                    </li>
                     {% empty %}
                         <li>No ratings yet.</li>
                     {% endfor %}
                 </ul>
                 </div>
+
+                  <div>
+                    <a href="{% url 'view_report' scholarship_id=data.scholarship.id %}"><button>View Report</button></a>
+                </div>
               </td>
+            </tr>
+
             </tr>
           {% endfor %}
         </tbody>

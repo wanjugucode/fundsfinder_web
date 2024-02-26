@@ -46,3 +46,12 @@ class ScholarshipRating(models.Model):
     scholarship = models.ForeignKey(Scholarships, on_delete=models.CASCADE, related_name='ratings')
     rating = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+class ReportInaccuracy(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    scholarship = models.ForeignKey(Scholarships, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    description = models.TextField()
+
+    def __str__(self):
+        return f'Report by {self.user.username} on {self.scholarship.name}'

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scholarship Detail</title>
+</head>
+<body>
+    <h1>{{ scholarship.name }}</h1>
+    <p>Description: {{ scholarship.description }}</p>
+    <p>Eligibility: {{ scholarship.eligibility_criteria }}</p>
+    <p>Application Deadline: {{ scholarship.application_deadline }}</p>
+
+    <h2>Reports:</h2>
+    <ul>
+        {% for report in reports %}
+            <li>{{ report.description }}</li>
+        {% empty %}
+            <li>No reports for this scholarship.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

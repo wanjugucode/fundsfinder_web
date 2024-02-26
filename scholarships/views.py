@@ -6,9 +6,8 @@ from .models import Scholarships
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from datetime import datetime,date
-from .models import Scholarships, Bookmark
+from .models import *
 from userprofile.models import UserProfile  
-from .models import ScholarshipApplication,ScholarshipComment, ScholarshipRating
 
 
 # Create your views here.
@@ -57,11 +56,16 @@ def scholarships_list(request):
             'ratings': ratings
         })
 
+    user_profile = None
+    if hasattr(request.user, 'userprofile'):
+        user_profile = request.user.userprofile
+
     context = {
         'scholarship_data': scholarship_data,
-        'notifications': Notification.objects.filter(userprofile=request.user.userprofile)
+        'notifications': Notification.objects.filter(userprofile=user_profile)
     }
     return render(request, 'scholarship_list.html', context)
+
 
 @login_required
 def admin_scholarships_view(request):
@@ -286,3 +290,21 @@ def delete_rating(request, rating_id):
         messages.error(request, 'Rating does not exist.')
     
     return redirect('scholarships')
+@login_required
+def report_inaccuracy(request, scholarship_id):
+    scholarship = Scholarships.objects.get(id=scholarship_id)
+    if request.method == 'POST':
+        form = ReportForm(request.POST)
+        if form.is_valid():
+            description = form.cleaned_data['description']
+            ReportInaccuracy.objects.create(user=request.user, scholarship=scholarship, description=description)
+            messages.success(request, 'Thank you for your report. We will investigate.')
+            return redirect('scholarships')
+    else:
+        form = ReportForm()
+    return render(request, 'report_inaccuracy.html', {'form': form})
+
+def view_report(request, scholarship_id):
+    scholarship = get_object_or_404(Scholarships, id=scholarship_id)
+    reports = ReportInaccuracy.objects.filter(scholarship=scholarship)
+    return render(request, 'view_report.html', {'scholarship': scholarship,'reports': reports})

@@ -3,24 +3,27 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .forms import UserProfileForm
 from .models import *
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
+
 
 @login_required
 def add_profile(request):
-    # Check if the user already has a profile
     if UserProfile.objects.filter(user=request.user).exists():
-        return redirect('viewprofile')  # Redirect to the viewprofile page or another appropriate location
+        return redirect('viewprofile')  # Redirect to the view_profile page or another appropriate location
     if request.method == "POST":
         form = UserProfileForm(request.POST, request.FILES)
         if form.is_valid():
             user_profile = form.save(commit=False)
             user_profile.user = request.user
             user_profile.save()
-            return redirect('viewprofile')  # Redirect to the viewprofile page or another appropriate location
+            return redirect('viewprofile')  # Redirect to the view_profile page or another appropriate location
         else:
             print(form.errors)
     else:
-        form = UserProfileForm()
+        initial_data = {'user': request.user}
+        form = UserProfileForm(initial=initial_data)
     return render(request, "add_profile.html", {"form": form})
+
 
 @login_required
 def edit_profile(request, id):
@@ -52,5 +55,10 @@ def dashboard(request):
 
 @login_required
 def view_profile(request):
-    profile=UserProfile.objects.all()
-    return render(request,"view_profile.html",{ "profile":profile})
+    try:
+        profile = UserProfile.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        return redirect('addprofile')
+    return render(request, "view_profile.html", {"profile": profile})
+
+

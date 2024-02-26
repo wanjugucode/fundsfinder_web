@@ -103,18 +103,15 @@
     <div class="profile-container">
       <div class="main">
         <div class="profile">
-          {% for profile in profile %}
+          <div class="profile">
             <img src="https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=" class="profile-img" />
-          {% endfor %}
         </div>
         <div class="content">
-          {% for profile in profile %}
-            <p><a class="nav-link" href="{% url 'editprofile' id=profile.id %}">Edit profile</a></p> 
+            <p><a class="nav-link" href="{% url 'editprofile' id=profile.id %}">Edit profile</a></p>
             <p class="profile-info">Username: {{ profile.user }}</p>
             <p class="profile-info">Telephone: {{ profile.telephone_number }}</p>
-
-
-          {% endfor %}
+        </div>
+        
         </div>
       </div>
     </div>
@@ -122,23 +119,21 @@
   <div class="col-md-4">
     <div class="profile-container">
 
-    <div class="content">
-      {% for profile in profile %}
-         <p class="profile-info">Email: {{ profile.contact_email }}</p>
+      <div class="content">
+        <p class="profile-info">Email: {{ profile.contact_email }}</p>
         <p class="profile-info">Optional Contact Phone: {{ profile.optional_contact_phone }}</p>
         <p class="profile-info">Date of Birth: {{ profile.date_of_birth }}</p>
         <p class="profile-info">Optional Contact Phone: {{ profile.optional_contact_phone }}</p>
         <p class="profile-info">Current_school: {{ profile.current_school }}</p>
         <p class="profile-info">field_of_study:{{ profile.field_of_study }}</p>
-{% endfor %}
-    </div>  
+    </div>
+    
   </div>
   </div>
   <div class="col-md-4">
     <div class="profile-container">
 
     <div class="content">
-      {% for profile in profile %}
       <p class="profile-info"> current_grade_level : {{ profile.current_grade_level }}</p>
       <p class="profile-info">cumulative_gpa : {{ profile.cumulative_gpa }}</p>
       <p class="profile-info">personal_statement: {{ profile.personal_statement}}</p>
@@ -146,7 +141,6 @@
       <p class="profile-info"> reference_name: {{ profile.reference_name }}</p>
       <p class="profile-info">reference_email: {{ profile.reference_email }}</p>
       <p class="profile-info">custom_fields: {{ profile.custom_fields }}</p>
-      {% endfor %}
     </div>  
   </div>
   </div>
