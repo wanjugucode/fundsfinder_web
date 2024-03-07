@@ -6,27 +6,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
 </head>
 <body>
   <div class="scholarship-table">
     {% include 'new_scholarship_notifications.html' %}
-
-    <button><a href="{% url 'viewprofile' %}">My profile</a></button>
-
-    <form id="search-form" action="{% url 'scholarships' %}" method="GET">
-      <label for="name">Search by Title:</label>
-      <input type="text" name="name" id="name" placeholder="Search by title">
-
-      <label for="description">Search by Description:</label>
-      <input type="text" name="description" id="description" placeholder="Search by description">
-
-      <label for="deadline">Search by Deadline:</label>
-      <input type="date" name="deadline" id="deadline">
-
-      <button type="submit">Search</button>
-      <th><a href="{% url 'logout' %}">Logout</a></th>
-
-    </form>
+ 
     <table id="scholarship-table">
         <thead>
           <tr>

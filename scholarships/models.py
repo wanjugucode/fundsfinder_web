@@ -13,7 +13,6 @@ class Scholarships(models.Model):
     id= models.IntegerField(primary_key=True,null=False)
     created_at = models.DateTimeField(auto_now_add=True,null=True)
 
-
 class ScholarshipApplication(models.Model):
     userprofile= models.ForeignKey('userprofile.UserProfile', on_delete=models.CASCADE, related_name='scholarships',null=True)
     essay= models.TextField(null=True)
@@ -27,7 +26,6 @@ class ApprovedScholarship(models.Model):
     original_application = models.OneToOneField(ScholarshipApplication, on_delete=models.CASCADE, related_name='approved_application',null=False)
     approval_date = models.DateTimeField(auto_now_add=True,null=True
     )
-
     def __str__(self):
         return f"Approved Application for {self.original_application.name}"
 

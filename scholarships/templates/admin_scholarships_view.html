@@ -57,7 +57,38 @@
         <td>{{scholarship.application_deadline}}</td>
         <td> <a href="{% url 'editscholarship' id=scholarship.id%}"><button>Edit</button></a></td>
         <td> <a href="{% url 'removescholarship' id=scholarship.id%}"><button>Remove</button></a></td>
+        <tr>
+          <td colspan="9">
+            <div>
+              <h4>Comments:</h4>
+              <ul>
+                {% for comment in data.comments %}
+                    <li>{{ comment.user.username }} - {{ comment.comment }}
+                      <a href="{% url 'edit_comment' comment.id %}">edit</a>
+                      <a href="{% url 'delete_comment' comment.id %}">Delete</a>
+                    </li>
+                {% empty %}
+                    <li>No comments yet.</li>
+                {% endfor %}
+            </ul>
+            </div>
+            <div>
+              <h4>Ratings:</h4>
+              <ul>
+                {% for rating in data.ratings %}
+                    <li>{{ rating.user.username }} - {{ rating.rating }}
+                      <a href="{% url 'edit_rating' rating.id%}">edit</a>
+                      <a href="{% url 'delete_rating' rating.id %}">Delete</a>
+                </li>
+                {% empty %}
+                    <li>No ratings yet.</li>
+                {% endfor %}
+            </ul>
+            </div>
 
+
+          </td>
+        </tr>
 
       </tr>
       {% endfor %}

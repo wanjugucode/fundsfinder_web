@@ -6,10 +6,8 @@ from .forms import *
 from .models import Scholarships
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from datetime import datetime,date
-from .models import *
-from userprofile.models import UserProfile  
-
+from datetime import datetime, timedelta
+from django.utils import timezone
 
 # Create your views here.
 @login_required
@@ -28,11 +26,19 @@ def add_scholarship(request):
 @login_required
 def scholarships_list(request):
     scholarships = Scholarships.objects.all()
+
+    created_at_threshold = timezone.now() - timedelta(hours=24)
+    recently_added_scholarships = Scholarships.objects.filter(created_at__gte=created_at_threshold)
+
+    deadline_threshold = timezone.now() + timedelta(hours=72)
+    upcoming_deadlines = Scholarships.objects.filter(application_deadline__lte=deadline_threshold)
+    approved_applications = ScholarshipApplication.objects.filter(is_approved=True).distinct()  
+    total_notifications = upcoming_deadlines.count() + recently_added_scholarships.count() + approved_applications.count()
+  
     try:
         user_profile = request.user.userprofile  # Assuming userprofile is related to the User model
     except ObjectDoesNotExist:
         user_profile = None
-
     # Retrieve the search query parameters from the request
     search_name = request.GET.get('name')
     search_description = request.GET.get('description')
@@ -60,6 +66,7 @@ def scholarships_list(request):
         # Fetch comments and ratings for each scholarship
         comments = ScholarshipComment.objects.filter(scholarship=scholarship)
         ratings = ScholarshipRating.objects.filter(scholarship=scholarship)
+
         scholarship_data.append({
             'scholarship': scholarship,
             'comments': comments,
@@ -68,9 +75,15 @@ def scholarships_list(request):
 
     context = {
         'scholarship_data': scholarship_data,
-        'notifications': Notification.objects.filter(userprofile=request.user.userprofile) if user_profile else None
+        'upcoming_deadlines': upcoming_deadlines,
+        'recently_added_scholarships': recently_added_scholarships,
+        'approved_applications': approved_applications,
+        'total_notifications': total_notifications
+
     }
+    print(context)
     return render(request, 'scholarship_list.html', context)
+
 
 
 @login_required

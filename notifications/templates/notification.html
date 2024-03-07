@@ -6,11 +6,15 @@
 </head>
 <body>
     <h2>Notifications</h2>
-    <ul>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown" id="notifications-dropdown"
+    data-popper-placement="bottom-end"
+    style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(-70px, 42px, 0px);">
         {% if notifications %}
             {% for notification in notifications %}
-                <li>{{ notification.message }}</li>
+                <li class="dropdown-item">{{ notification.message }}</li>
             {% endfor %}
+            <hr class="dropdown-divider">
+
         {% else %}
             <p>No notifications</p>
         {% endif %}
