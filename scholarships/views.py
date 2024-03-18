@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render,redirect
 from django.core.exceptions import ObjectDoesNotExist
-from notifications.models import Notification
+from userprofile.models import UserProfile
 from .forms import *
 from .models import Scholarships
 from django.contrib.auth.decorators import login_required
@@ -9,7 +9,7 @@ from django.contrib import messages
 from datetime import datetime, timedelta
 from django.utils import timezone
 
-# Create your views here.
+
 @login_required
 def add_scholarship(request):
     if request.method == "POST":

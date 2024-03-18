@@ -13,6 +13,8 @@ class Scholarships(models.Model):
     id= models.IntegerField(primary_key=True,null=False)
     created_at = models.DateTimeField(auto_now_add=True,null=True)
 
+
+
 class ScholarshipApplication(models.Model):
     userprofile= models.ForeignKey('userprofile.UserProfile', on_delete=models.CASCADE, related_name='scholarships',null=True)
     essay= models.TextField(null=True)

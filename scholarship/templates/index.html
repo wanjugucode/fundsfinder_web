@@ -1,0 +1,172 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholarship List</title>
+</head>
+<body>
+
+  <div class="scholarship-table">
+    {% include 'new_scholarship_notifications.html' %}
+
+    <table id="scholarship-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Eligibility</th>
+            <th>Application Deadline</th>
+            <th>Status</th>
+
+          </tr>
+        </thead>
+        <tbody>
+        {% for scholarship in scholarships %}
+       <tr>
+
+            <td>{{ scholarship.0 }}</td>
+            <td>
+                Amount: {{ scholarship.1 }}</td>
+            <td>Eligibility Criteria:{{ scholarship.3 }}</td>
+            <td>Deadline: {{ scholarship.2 }} </td>
+            <td><a href="{{ scholarship.apply }}">Apply</a></td>
+          
+          
+ 
+        
+        <tr>
+          <td colspan="9">
+            <!-- <div>
+              <h4>Comments:</h4>
+              <ul>
+                {% for comment in data.comments %}
+                    <li>{{ comment.user.username }} - {{ comment.comment }}
+                      <a href="{}">edit</a>
+                      <a href="{}">Delete</a>
+                    </li>
+                {% empty %}
+                    <li>No comments yet.</li>
+                {% endfor %}
+            </ul>
+            </div> -->
+
+            <!-- <div>
+              <h4>Ratings:</h4>
+              <ul>
+                {% for rating in data.ratings %}
+                    <li>{{ rating.user.username }} - {{ rating.rating }}
+                      <a href="{}">edit</a>
+                      <a href="{}">Delete</a>
+                </li>
+                {% empty %}
+                    <li>No ratings yet.</li>
+                {% endfor %}
+            </ul>
+            </div> -->
+
+              <!-- <div>
+                <a href="{}"><button>View Report</button></a>
+            </div> -->
+          </td>
+        </tr>
+      </tr>
+        {% endfor %}
+  </tbody>
+</table>
+    <style>
+
+      .scholarship-table {
+        margin: 20px;
+      }
+  
+      #scholarship-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+  
+      #scholarship-table th,
+      #scholarship-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+      }
+  
+      #scholarship-table th {
+        background-color: #f2f2f2;
+        font-size: 22px;
+      }
+  
+      #scholarship-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+  
+      #scholarship-table tr:hover {
+        background-color: #ddd;
+      }
+  
+      #search-form {
+        margin-bottom: 20px;
+      }
+  
+      #search-form label {
+        margin-right: 10px;
+      }
+  
+      #search-form input[type="text"],
+      #search-form input[type="date"] {
+        margin-right: 10px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+  
+      #search-form button {
+        padding: 5px 10px;
+        background-color: rgb(66,43,114);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: auto;
+        height: 30px;
+        font-size: 20px;
+      }
+  
+      #search-form button:hover {
+        background-color: #333;
+        text-transform: uppercase;
+      }
+  
+      button a {
+        color: white;
+        padding: 2px;
+        text-decoration: none;
+      }
+      th{
+              text-align: justify;
+            }
+      td {
+        background-color: rgb(162, 167, 241);
+        box-shadow: 10px 16px 16px #422b72;
+        font-size: 20px;
+        padding: 15px;
+        color: black;
+      }
+  
+      button {
+        background-color: rgb(66, 43, 114);
+        color: white;
+        width: auto;
+        height: 30px;
+        padding: 2px;
+        font-size: 20px;
+      }
+  
+      button:hover {
+        text-transform: uppercase;
+      }
+    </style> 
+</body>
+</html>

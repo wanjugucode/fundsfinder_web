@@ -11,7 +11,7 @@
 <body>
   <div class="scholarship-table">
     {% include 'new_scholarship_notifications.html' %}
- 
+
     <table id="scholarship-table">
         <thead>
           <tr>
@@ -55,7 +55,7 @@
               <td><a href="{% url 'add_report' scholarship_id=data.scholarship.id %}">Report</a></td>
             
             <tr>
-              <td colspan="9">
+              <!-- <td colspan="9">
                 <div>
                   <h4>Comments:</h4>
                   <ul>
@@ -86,7 +86,7 @@
                   <div>
                     <a href="{% url 'view_report' scholarship_id=data.scholarship.id %}"><button>View Report</button></a>
                 </div>
-              </td>
+              </td> -->
             </tr>
 
             </tr>
