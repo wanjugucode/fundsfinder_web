@@ -60,33 +60,41 @@
         <tr>
           <td colspan="9">
             <div>
-              <h4>Comments:</h4>
+              
               <ul>
                 {% for comment in data.comments %}
+                <h4>Comments:</h4>
                     <li>{{ comment.user.username }} - {{ comment.comment }}
                       <a href="{% url 'edit_comment' comment.id %}">edit</a>
                       <a href="{% url 'delete_comment' comment.id %}">Delete</a>
                     </li>
-                {% empty %}
-                    <li>No comments yet.</li>
+              
                 {% endfor %}
             </ul>
             </div>
             <div>
-              <h4>Ratings:</h4>
+            
               <ul>
                 {% for rating in data.ratings %}
+                <h4>Ratings:</h4>
                     <li>{{ rating.user.username }} - {{ rating.rating }}
                       <a href="{% url 'edit_rating' rating.id%}">edit</a>
                       <a href="{% url 'delete_rating' rating.id %}">Delete</a>
                 </li>
-                {% empty %}
-                    <li>No ratings yet.</li>
+            
                 {% endfor %}
             </ul>
             </div>
 
+              <div>
+                <ul>
+                  <h4>
+                    <a href="{% url 'view_report' scholarship_id=data.scholarship.id %}"><button>View Report</button></a>
 
+                  </h4>
+
+                </ul>
+            </div>
           </td>
         </tr>
 

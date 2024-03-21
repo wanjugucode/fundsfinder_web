@@ -8,6 +8,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from datetime import datetime, timedelta
 from django.utils import timezone
+from django.utils.translation import gettext as _
+
+from django.utils.translation import get_language, activate, gettext
+
 
 
 @login_required
@@ -70,7 +74,8 @@ def scholarships_list(request):
         scholarship_data.append({
             'scholarship': scholarship,
             'comments': comments,
-            'ratings': ratings
+            'ratings': ratings,
+           
         })
 
     context = {
@@ -78,13 +83,29 @@ def scholarships_list(request):
         'upcoming_deadlines': upcoming_deadlines,
         'recently_added_scholarships': recently_added_scholarships,
         'approved_applications': approved_applications,
-        'total_notifications': total_notifications
+        'total_notifications': total_notifications,
+
 
     }
     print(context)
     return render(request, 'scholarship_list.html', context)
 
+def index(request):
+    trans = translate(language='fr')
+    return render(request, 'home.html', {'trans': trans})
 
+def item(request):
+    trans = _('hello')
+    return render(request, 'item.html', {'trans': trans})
+
+def translate(language):
+    cur_language = get_language()
+    try:
+        activate(language)
+        text = gettext('hello')
+    finally:
+        activate(cur_language)
+    return text
 
 @login_required
 def admin_scholarships_view(request):

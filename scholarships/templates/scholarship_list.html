@@ -1,17 +1,13 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
 </head>
 <body>
   <div class="scholarship-table">
     {% include 'new_scholarship_notifications.html' %}
-
     <table id="scholarship-table">
         <thead>
           <tr>
@@ -47,46 +43,42 @@
                     <a href="{% url 'applyscholarship' data.scholarship.id %}"><button>Apply</button></a>
                 {% endif %}
             </td>
-            
-    
               <td><a href="{% url 'bookmark_scholarship' scholarship_id=data.scholarship.id %}">Bookmark</a></td>
               <td><a href="{% url 'add_comment' scholarship_id=data.scholarship.id %}">Comment</a></td>
               <td><a href="{% url 'add_rating' scholarship_id=data.scholarship.id %}">Rate</a></td>
               <td><a href="{% url 'add_report' scholarship_id=data.scholarship.id %}">Report</a></td>
             
             <tr>
-              <!-- <td colspan="9">
+              <td colspan="9">
                 <div>
-                  <h4>Comments:</h4>
+                  
                   <ul>
                     {% for comment in data.comments %}
+                    <h4>Comments:</h4>
                         <li>{{ comment.user.username }} - {{ comment.comment }}
                           <a href="{% url 'edit_comment' comment.id %}">edit</a>
                           <a href="{% url 'delete_comment' comment.id %}">Delete</a>
                         </li>
-                    {% empty %}
-                        <li>No comments yet.</li>
+                  
                     {% endfor %}
                 </ul>
                 </div>
                 <div>
-                  <h4>Ratings:</h4>
+                
                   <ul>
                     {% for rating in data.ratings %}
+                    <h4>Ratings:</h4>
                         <li>{{ rating.user.username }} - {{ rating.rating }}
                           <a href="{% url 'edit_rating' rating.id%}">edit</a>
                           <a href="{% url 'delete_rating' rating.id %}">Delete</a>
                     </li>
-                    {% empty %}
-                        <li>No ratings yet.</li>
+                
                     {% endfor %}
                 </ul>
                 </div>
 
-                  <div>
-                    <a href="{% url 'view_report' scholarship_id=data.scholarship.id %}"><button>View Report</button></a>
-                </div>
-              </td> -->
+             
+              </td>
             </tr>
 
             </tr>
@@ -164,25 +156,37 @@
         th{
                 text-align: justify;
               }
-        td {
+              
+        tr {
           background-color: rgb(162, 167, 241);
-          box-shadow: 10px 16px 16px #422b72;
+          /* box-shadow: 10px 16px 16px #422b72; */
+          box-shadow: 1px 4px 4px #422b72;
           font-size: 20px;
           padding: 15px;
           color: black;
+          
         }
-    
+        td {
+          font-size: 20px;
+          padding: 15px;
+          color: black;
+          background-color: rgb(162, 167, 241);
+
+        }
+        tr:hover{
+          background-color: rgb(162, 167, 241);
+        }
+
         button {
           background-color: rgb(66, 43, 114);
           color: white;
           width: auto;
           height: 30px;
-          padding: 2px;
           font-size: 20px;
         }
     
         button:hover {
-          text-transform: uppercase;
+          background-color: aqua;
         }
       </style>  
     

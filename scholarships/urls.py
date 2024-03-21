@@ -24,4 +24,6 @@ urlpatterns=[
     path('delete_rating/<int:rating_id>/', views.delete_rating, name='delete_rating'),
     path('add_report/<int:scholarship_id>/', views.report_inaccuracy, name='add_report'),
     path('view_report/<int:scholarship_id>/', views.view_report, name='view_report'),
+    path('scholarships',views.index,name='home'),
+    path('item/',views.item, name='item'),
     ]
