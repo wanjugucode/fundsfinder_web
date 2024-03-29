@@ -30,17 +30,13 @@
               <td>{{ data.scholarship.eligibility_criteria }}</td>
               <td>{{ data.scholarship.application_deadline }}</td>
               <td>
-                {% if data.scholarship.has_applied and data.scholarship.has_approved %}
-                <button>Approved</button>
+               
 
-                {% elif data.scholarship.has_applied %}
-                <button>Applied</button>
-
-                {% elif data.scholarship.has_expired %}
+                {% if data.scholarship.has_expired %}
                     <button>Expired</button>
 
                 {% else %}
-                    <a href="{% url 'applyscholarship' data.scholarship.id %}"><button>Apply</button></a>
+                    <p>{{ data.scholarship.application_deadline }}</p>
                 {% endif %}
             </td>
               <td><a href="{% url 'bookmark_scholarship' scholarship_id=data.scholarship.id %}">Bookmark</a></td>
@@ -186,7 +182,7 @@
         }
     
         button:hover {
-          background-color: aqua;
+          background-color: rgb(162, 167, 241);
         }
       </style>  
     
