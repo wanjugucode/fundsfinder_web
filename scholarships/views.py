@@ -47,11 +47,15 @@ def scholarships_list(request):
     search_name = request.GET.get('name')
     search_description = request.GET.get('description')
     search_deadline = request.GET.get('deadline')
+    search_country = request.GET.get('country')
+
     # Filtering scholarships based on search criteria
     if search_name:
         scholarships = scholarships.filter(name__icontains=search_name)
     if search_description:
         scholarships = scholarships.filter(description__icontains=search_description)
+    if search_country:
+        scholarships = scholarships.filter(country__icontains=search_country)
     if search_deadline:
         try:
             search_deadline = datetime.strptime(search_deadline, '%Y-%m-%d').date()
@@ -118,7 +122,9 @@ def edit_scholarship(request, id):
     if request.method == "POST":
         form = ScholarshipAdditionForm(request.POST, request.FILES, instance=scholarship)
         if form.is_valid():
-            form.save()       
+            form.save()
+            return redirect('admin_scholarships_view') 
+       
     else:
         form = ScholarshipAdditionForm(instance=scholarship)
     return render(request, 'edit_scholarship.html', {"form": form})

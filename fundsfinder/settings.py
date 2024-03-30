@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'scholarship',
     'userprofile',
     'notifications',
+    'django_countries'
     
    
 ]

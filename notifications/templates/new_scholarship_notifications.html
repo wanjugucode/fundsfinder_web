@@ -93,11 +93,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <div class="navbar-nav me-auto mb-2 mb-lg-0">
                     <form id="search-form" action="{% url 'scholarships' %}" method="GET">
-                        <label for="name">Search by Title:</label>
+                        <label for="name">Title:</label>
                         <input type="text" name="name" id="name" placeholder="Search by title">
-                        <label for="description">Search by Description:</label>
+                        <label for="description">Description:</label>
                         <input type="text" name="description" id="description" placeholder="Search by description">
-                        <label for="deadline">Search by Deadline:</label>
+                        <label for="deadline">country:</label>
+                        <input type="text" name="country" id="country">
+                        <label for="deadline">Deadline:</label>
                         <input type="date" name="deadline" id="deadline">
                         <button type="submit">Search</button>
                     </form>
@@ -170,7 +172,7 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="{% url 'logout' %}">Sign out</a></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                     </ul>
                 </div>
 

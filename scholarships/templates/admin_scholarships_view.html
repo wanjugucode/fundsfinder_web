@@ -13,26 +13,12 @@
 <body>
   <div class="scholarship-table">
 
-    <form id="search-form" action="{% url 'scholarships' %}" method="GET">
-      <label for="name">Search by  Title:</label>
-      <input type="text" name="name" id="name" placeholder="Search by title">
+    {% include 'new_scholarship_notifications.html' %}
 
-      <label for="description">Search by  Description:</label>
-      <input type="text" name="description" id="description" placeholder="Search by description">
-
-      <label for="deadline">Search by Deadline:</label>
-      <input type="date" name="deadline" id="deadline">
-
-      <button type="submit">Search</button>
-    </form>
-  
 
     <table id="scholarship-table">
         <tr>
-        <th> <a href="{% url 'applicants_list'%}"><button>Applicants</button></a></th>
-        <th> <a href="{% url 'approved_list'%}"><button>Approved list</button></a></th>
         <th> <a href="{% url 'addscholarship'%}"><button>Add scholarship</button></a></th>
-        <th><a href="{% url 'logout' %}">Logout</a></th>
 
       </tr>
 
@@ -40,9 +26,10 @@
         <th>Name</th>
         <th>Decription</th>
         <th>Egliblity</th>
+        <th>Country</th>
         <th>Deadline</th>
-        <th>Action</th>
-        <th>Action</th>
+        <th>Edit</th>
+        <th>Remove</th>
 
 
       </tr>
@@ -54,7 +41,15 @@
         <td>{{scholarship.name}}</td>
         <td>{{scholarship.description}}</td>
         <td>{{scholarship.eligibility_criteria}}</td>
-        <td>{{scholarship.application_deadline}}</td>
+        <td>{{scholarship.country.name }}</td>
+        <td>
+          {% if scholarship.has_expired %}
+          <button>Expired</button>
+
+          {% else %}
+              <p>{{scholarship.application_deadline }}</p>
+          {% endif %}
+      </td>
         <td> <a href="{% url 'editscholarship' id=scholarship.id%}"><button>Edit</button></a></td>
         <td> <a href="{% url 'removescholarship' id=scholarship.id%}"><button>Remove</button></a></td>
         <tr>
