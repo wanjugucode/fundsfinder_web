@@ -14,6 +14,7 @@ class Scholarships(models.Model):
     id= models.IntegerField(primary_key=True,null=False)
     created_at = models.DateTimeField(auto_now_add=True,null=True)
     country =CountryField(blank_label='(select country)',null=True)
+    url = models.CharField(max_length=255,null=True)
 
 
 

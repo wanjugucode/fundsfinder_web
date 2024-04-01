@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns=[
     path('',views.scholarships_list, name="scholarships"),
+    path('home/',views.landing_page, name="home"),
     path('admin_scholarships_view',views.admin_scholarships_view, name="admin_scholarships_view"),
     path('addscholarship',views.add_scholarship,name='addscholarship'),
     path('editscholarship/<int:id>/',views.edit_scholarship, name='editscholarship'),
@@ -25,5 +26,8 @@ urlpatterns=[
     path('add_report/<int:scholarship_id>/', views.report_inaccuracy, name='add_report'),
     path('view_report/<int:scholarship_id>/', views.view_report, name='view_report'),
     path('scholarships',views.index,name='home'),
+    path('support',views.support_page, name="support"),
+
+
     path('item/',views.item, name='item'),
     ]

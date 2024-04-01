@@ -7,6 +7,6 @@ class Scholarship(models.Model):
     deadline = models.CharField(max_length=255)
     eligibility_criteria= models.TextField(blank=True, null=True)
     image=models.ImageField(upload_to='scholarship_images/',null=True)
-    apply = models.CharField(max_length=255,null=True)
+    url = models.CharField(max_length=255,null=True)
     id= models.IntegerField(primary_key=True,null=False)
 

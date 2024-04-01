@@ -4,7 +4,7 @@ from.models import *
 class ScholarshipAdditionForm(forms.ModelForm):
     class Meta:
         model=Scholarships
-        fields=['name','description','eligibility_criteria','scholarship_type','application_deadline','Contact_email','country']
+        fields=['name','description','eligibility_criteria','scholarship_type','application_deadline','Contact_email','country','url']
 
 
 

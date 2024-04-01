@@ -23,19 +23,15 @@ class Command(BaseCommand):
                 egligibility_criteria = scholarship.find('div', class_="SimpleScholarshipItem-module--eligibilityDetails--2ff00")
                 if egligibility_criteria != None:
                     egligibility_criteria = egligibility_criteria.text.strip()
-                apply_link = scholarship.find('a', class_="SimpleScholarshipItem-module--container--eeab6")
-                if apply_link:
-                    apply = apply_link['href']
+                url = scholarship.find('a', class_="SimpleScholarshipItem-module--container--eeab6")
+                if url:
+                    url = 'https://bold.org' + url['href']  # Append the base URL
                 else:
-                    apply = None
-
-
+                    url = None
 
                 # apply=scholarship.find('div', class_="ScholarshipItem-module--title--3uU1d").find('a')['href']
-
                 # apply=scholarship.find('button', class_="Button-module--button--54905 Button-module--small--715d5 Button-module--primary--9ed87 Button-module--fluid--e4e8b").text.strip()
-
-                scholarships.append((name,amount, deadline,egligibility_criteria,apply))
+                scholarships.append((name,amount, deadline,egligibility_criteria,url))
             Scholarship.objects.all().delete()  
             for scholarship in scholarships:
                 print(f"Adding scholarship: {scholarship} ")

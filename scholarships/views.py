@@ -115,7 +115,10 @@ def translate(language):
 def admin_scholarships_view(request):
     scholarships = Scholarships.objects.all()
     return render(request, "admin_scholarships_view.html", { "scholarships": scholarships})
-
+def landing_page(request):
+    return render(request, "landing_page.html")
+def support_page(request):
+    return render(request, "support.html")
 @login_required
 def edit_scholarship(request, id):  
     scholarship = Scholarships.objects.get(id=id)

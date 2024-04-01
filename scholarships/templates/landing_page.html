@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+
+<!-- <div class='logo'><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYoiCbjy3cmJNN2JwQ_kDWkXtgMYKJ6DQznA&usqp=CAU" class="landing_image" ></div> -->
+{% include 'new_scholarship_notifications.html' %}
+<!-- <a href="{% url 'scholarships' %}"><button class="btn">GET STARTED</button></a> -->
+<div class="hero"style="background-image:url(newpic.png) " >
+    <div class="content" >
+      <h1>
+        ByteBreeze is an ICT company dedicated to revolutionizing web services.    
+          </h1>
+      <p>
+        With a strong focus on transformation, ByteBreeze aims to bring about significant
+         changes and advancements in the field of web services. By leveraging cutting-edge 
+         technologies and implementing forward-thinking strategies, 
+        ByteBreeze strives to enhance the way web services are developed, deployed, and utilized.
+      </p>
+      <span class="home-btn">
+        <button><a href="services.html">Services</a></button> 
+        <button><a href="contact.html">Contact Us</a></button>
+    </span>
+    </div>
+  </div>
+
+    <style>
+.logo{
+
+  margin-right: 0%;
+  height:5px;
+  width: 10px;
+ 
+
+}
+.landing_image{
+  height:160px;
+  width: 190px;
+}
+.btn{
+    float: left;
+    margin-top: 12%;
+    margin-right: 5%;
+    height: 100px;
+    width: 250px;
+    margin-left: 40%;
+    background-color: rgb(66,43,114);
+    color:rgb(208, 194, 208);
+    font-size: 30px;
+    border-radius: 5%;
+    border: 5px solid rgb(66,43,114);
+
+}
+.btn:hover{
+    border: 5px solid rgb(66,43,114);
+    background-color:rgb(66,43,114);
+    color: white;
+} 
+
+
+
+ </style>
+
+</body>
+</html>

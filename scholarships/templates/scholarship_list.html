@@ -15,11 +15,12 @@
             <th>Description</th>
             <th>Eligibility</th>
             <th>Country</th>
+            <th>Website</th>
             <th>Deadline</th>
-            <th>Bookmark</th>
+            <!-- <th>Bookmark</th>
             <th>Comment</th>
             <th>Rate</th>
-            <th>Report</th>
+            <th>Report</th> -->
           </tr>
         </thead>
         <tbody>
@@ -28,10 +29,16 @@
               <td>{{ data.scholarship.name }}</td>
               <td>{{ data.scholarship.description }}</td>
               <td>{{ data.scholarship.eligibility_criteria }}</td>
-              <td>Country:{{ data.scholarship.country.name }} </td>
+              <td>{{ data.scholarship.country.name }} </td>
               <td>
-               
-
+                {% if data.scholarship.url %}
+                    <a href="{{ data.scholarship.url }}">Link</a>
+                {% else %}
+                    N/A
+                {% endif %}
+              </td>
+              <td>
+              
                 {% if data.scholarship.has_expired %}
                     <button>Expired</button>
 
@@ -39,10 +46,10 @@
                     <p>{{ data.scholarship.application_deadline }}</p>
                 {% endif %}
             </td>
-              <td><a href="{% url 'bookmark_scholarship' scholarship_id=data.scholarship.id %}">Bookmark</a></td>
+              <!-- <td><a href="{% url 'bookmark_scholarship' scholarship_id=data.scholarship.id %}">Bookmark</a></td>
               <td><a href="{% url 'add_comment' scholarship_id=data.scholarship.id %}">Comment</a></td>
               <td><a href="{% url 'add_rating' scholarship_id=data.scholarship.id %}">Rate</a></td>
-              <td><a href="{% url 'add_report' scholarship_id=data.scholarship.id %}">Report</a></td>
+              <td><a href="{% url 'add_report' scholarship_id=data.scholarship.id %}">Report</a></td> -->
             
             <tr>
               <td colspan="9">
@@ -55,7 +62,7 @@
                           <a href="{% url 'edit_comment' comment.id %}">edit</a>
                           <a href="{% url 'delete_comment' comment.id %}">Delete</a>
                         </li>
-                  
+              
                     {% endfor %}
                 </ul>
                 </div>
