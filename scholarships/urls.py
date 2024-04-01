@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns=[
     path('scholarships',views.scholarships_list, name="scholarships"),
-    path('',views.landing_page, name="landing"),
+    path('',views.landing_page, name="landing_page"),
     path('admin_scholarships_view',views.admin_scholarships_view, name="admin_scholarships_view"),
     path('addscholarship',views.add_scholarship,name='addscholarship'),
     path('editscholarship/<int:id>/',views.edit_scholarship, name='editscholarship'),

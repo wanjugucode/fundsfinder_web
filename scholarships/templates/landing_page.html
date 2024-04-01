@@ -20,8 +20,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 80vh;
-            background-image: url("{% static 'pineapple.jpg' %}");
+            height: 100vh;
+            background-image: url("{% static 'landing_image.jpg' %}");
             background-size: cover;
             background-position: center;
             position: relative;
@@ -31,8 +31,8 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.5); /* Transparent white overlay */
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.67); /* Transparent white overlay */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -42,12 +42,12 @@
         }
         .overlay h1 {
             font-size: 3em;
-            color: rgb(66,43,114);
+            color: black;
             margin-bottom: 20px;
         }
         .overlay p {
             font-size: 1.5em;
-            color: rgb(66,43,114);
+            color: black;
             margin-bottom: 20px;
         }
         .overlay button {
@@ -69,9 +69,10 @@
 
     <div class="hero">
         <div class="overlay">
-            <h1>FundsFinder : Simplifying scholarship discovery.</h1>
-            <p>Resolution involves creating an accessible and user-friendly platform for scholarships and financial aid, referred to as "FundsFinder". This platform aims to overcome current obstacles by gathering precise and current information, incorporating advanced search features, and presenting an easy-to-use interface. FundsFinder is intended to function as an all-encompassing tool for students, simplifying the process of discovering and applying for scholarships.</p>
-            <a href="{% url 'scholarships' %}"><button>Scholarship</button></a>
+            <h1>FundsFinder  </h1>
+              <h2>Simplifying scholarship discovery</h2>
+            <p>Creating an accessible and user-friendly platform for scholarships and financial aid. This platform aims to overcome current obstacles by gathering precise and current information, incorporating advanced search features, and presenting an easy-to-use interface. FundsFinder functions as an all-encompassing tool for students, simplifying the process of discovering and applying for scholarships.</p>
+            <a href="{% url 'scholarships' %}"><button>Scholarships</button></a>
         </div>
     </div>
 </body>

@@ -23,7 +23,7 @@ def register_page(request):
 
 def login_page(request):
     if request.user.is_authenticated:
-        return redirect('scholarships')
+        return redirect('landing_page')
 
     if request.method == 'POST':
         username = request.POST.get('username')
