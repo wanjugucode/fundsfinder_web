@@ -25,6 +25,6 @@ urlpatterns = [
     path('profile/', include('userprofile.urls')),
     # path('notifications', include('notifications.urls')),
     path('', include('scholarships.urls')),
-    path('index', include('scholarship.urls')),
+    path('data', include('scholarship.urls')),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

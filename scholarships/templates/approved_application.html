@@ -1,11 +1,12 @@
+{% include 'navbar.html' %}
+{% include 'new_scholarship_notifications.html' %}
+
 <html>
     <head>
         <title>User Profile</title>
     </head>
     <body>
-        <h1>Welcome, {{ user.username }}</h1>
-        <p>Bio: {{ user_profile.telephone_number }}</p>
-        <h2>Approved Application for this user</h2>
+        <h2>Welcome, {{ user.username }}, view your Approved Application </h2>
         <table id="scholarship-table">
             <thead>
               <tr>
@@ -27,7 +28,9 @@
         </tbody>
         </table>
         <style>
-    
+    h2{
+      text-align: center;
+    }
             .scholarship-table {
               margin: 20px;
             }

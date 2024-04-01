@@ -1,4 +1,6 @@
 <!-- remove_scholarship.html -->
+{% include 'navbar.html' %}
+
 <form method="post" action="">
   {% csrf_token %}
   {{ form.confirm_removal }}

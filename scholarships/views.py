@@ -4,14 +4,15 @@ from django.core.exceptions import ObjectDoesNotExist
 from userprofile.models import UserProfile
 from .forms import *
 from .models import Scholarships
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib import messages
 from datetime import datetime, timedelta
 from django.utils import timezone
 from django.utils.translation import gettext as _
-
 from django.utils.translation import get_language, activate, gettext
 
+def is_admin(user):
+    return user.is_authenticated and user.is_superuser
 
 
 @login_required
@@ -112,6 +113,7 @@ def translate(language):
     return text
 
 @login_required
+@user_passes_test(is_admin)
 def admin_scholarships_view(request):
     scholarships = Scholarships.objects.all()
     return render(request, "admin_scholarships_view.html", { "scholarships": scholarships})
@@ -119,6 +121,8 @@ def landing_page(request):
     return render(request, "landing_page.html")
 def support_page(request):
     return render(request, "support.html")
+
+@user_passes_test(is_admin)
 @login_required
 def edit_scholarship(request, id):  
     scholarship = Scholarships.objects.get(id=id)
@@ -132,6 +136,7 @@ def edit_scholarship(request, id):
         form = ScholarshipAdditionForm(instance=scholarship)
     return render(request, 'edit_scholarship.html', {"form": form})
 
+@user_passes_test(is_admin)
 @login_required
 def remove_scholarship(request, id):
     scholarship = Scholarships.objects.get(id=id)

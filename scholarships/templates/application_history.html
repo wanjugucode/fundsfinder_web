@@ -1,11 +1,12 @@
+{% include 'navbar.html' %}
+<!DOCTYPE html>
 <html>
     <head>
         <title>User Profile</title>
     </head>
     <body>
-        <h1>Application History for {{ user.username }}</h1>
-        <h2>Welcome, {{ user.username }}</h2>
-        <p>Bio: {{ user.email }} </p>
+        <h2 class="wlcome-info">Welcome, {{ user.username }}, view your History</h2>
+        
         <table id="scholarship-table">
             <thead>
               <tr>
@@ -34,7 +35,11 @@
           </tbody>
         </table>
         <style>
-    
+       .wlcome-info{
+      text-align: center;
+      margin-top: 2%;
+
+    }
             .scholarship-table {
               margin: 20px;
             }

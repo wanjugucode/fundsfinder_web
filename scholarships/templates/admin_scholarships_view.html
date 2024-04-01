@@ -1,4 +1,7 @@
 {%load static%}
+{% include 'admin_nav.html' %}
+{% include 'new_scholarship_notifications.html' %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,12 +16,10 @@
 <body>
   <div class="scholarship-table">
 
-    {% include 'new_scholarship_notifications.html' %}
 
 
     <table id="scholarship-table">
         <tr>
-        <th> <a href="{% url 'addscholarship'%}"><button>Add scholarship</button></a></th>
 
       </tr>
 
@@ -28,6 +29,7 @@
         <th>Egliblity</th>
         <th>Country</th>
         <th>Deadline</th>
+        <th>Link</th>
         <th>Edit</th>
         <th>Remove</th>
 
@@ -42,6 +44,7 @@
         <td>{{scholarship.description}}</td>
         <td>{{scholarship.eligibility_criteria}}</td>
         <td>{{scholarship.country.name }}</td>
+
         <td>
           {% if scholarship.has_expired %}
           <button>Expired</button>
@@ -50,6 +53,13 @@
               <p>{{scholarship.application_deadline }}</p>
           {% endif %}
       </td>
+      <td>
+        {% if scholarship.url %}
+            <a href="{{ scholarship.url }}">Link</a>
+        {% else %}
+            N/A
+        {% endif %}
+      </td> 
         <td> <a href="{% url 'editscholarship' id=scholarship.id%}"><button>Edit</button></a></td>
         <td> <a href="{% url 'removescholarship' id=scholarship.id%}"><button>Remove</button></a></td>
         <tr>
