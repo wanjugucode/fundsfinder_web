@@ -1,150 +1,72 @@
+{% include 'navbar.html' %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>My profile</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
+ <style>
+  .card-group, .card, .card-body{
+    background-color: rgb(180, 183, 211);
+    box-shadow: 10px 16px 16px #422b72;
 
-    .container {
-      max-width: 1200px;
-    }
-
-    .row {
-      margin-bottom: 20px;
-    }
-
-    .profile-container {
-      width: 100%;
-      background-color: rgb(162, 167, 241);
-      box-shadow: 10px 16px 16px #422b72;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .profile {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .profile img {
-      border-radius: 50%;
-      height: 150px;
-      width: 150px;
-    }
-
-    .content {
-      margin-bottom: 20px;
-    }
-
-    .profile-info {
-      font-size: 18px;
-      margin-bottom: 10px;
-      color: black;
-    }
-
-    .other-info-container {
-      width: 100%;
-      background-color: rgb(66, 43, 114);
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-    }
-
-    .nav-link {
-      color: white !important;
-    }
-
-    .navbar-brand {
-      color: white !important;
-    }
-  </style>
-</head>
+  }
+  .container
+  {
+    margin-top: 5%;
+  }
+ </style>
 <body>
   <div class="container">
-    <div class="row">
-      <div class="other-info-container">
-        <nav class="navbar navbar-dark navbar-expand-lg">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'scholarships'%}">Scholarships</a>
-            </li>
-            <li class="nav-item">
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'applicant_history'%}">History</a>
-            </li>
-            <li class="nav-item">
-#            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'bookmarks'%}">Bookmarks</a>
-            </li>
-            <li class="nav-item">
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-<div class="row">
-  <div class="col-md-4 "style='text-align:center'>
-    <div class="profile-container">
-      <div class="main">
-        <div class="profile">
-          <div class="profile">
-            <img src="https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=" class="profile-img" />
-        </div>
-        <div class="content">
-            <p><a class="nav-link" href="{% url 'editprofile' id=profile.id %}">Edit profile</a></p>
-            <p class="profile-info">Username: {{ profile.user }}</p>
-            <p class="profile-info">Telephone: {{ profile.telephone_number }}</p>
-        </div>
-        
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="profile-container">
-
-      <div class="content">
+  <div class="card-group">
+    <div class="card">
+      <div class="card-body">
+        <p><a class="nav-link" href="{% url 'editprofile' id=profile.id %}">Edit profile</a></p>
+        <p class="profile-info">Username: {{ profile.user }}</p>
+        <p class="profile-info">Telephone: {{ profile.telephone_number }}</p>
         <p class="profile-info">Email: {{ profile.contact_email }}</p>
         <p class="profile-info">Optional Contact Phone: {{ profile.optional_contact_phone }}</p>
         <p class="profile-info">Date of Birth: {{ profile.date_of_birth }}</p>
         <p class="profile-info">Optional Contact Phone: {{ profile.optional_contact_phone }}</p>
-        <p class="profile-info">Current_school: {{ profile.current_school }}</p>
-        <p class="profile-info">field_of_study:{{ profile.field_of_study }}</p>
     </div>
-    
   </div>
-  </div>
-  <div class="col-md-4">
-    <div class="profile-container">
+    <div class="card">
+      <div class="card-body">
+        <p class="profile-info">Current_school: {{ profile.current_school }}</p>
 
-    <div class="content">
-      <p class="profile-info"> current_grade_level : {{ profile.current_grade_level }}</p>
-      <p class="profile-info">cumulative_gpa : {{ profile.cumulative_gpa }}</p>
-      <p class="profile-info">personal_statement: {{ profile.personal_statement}}</p>
-      <p class="profile-info">optional_essay: {{ profile.optional_essay }}</p>
-      <p class="profile-info"> reference_name: {{ profile.reference_name }}</p>
-      <p class="profile-info">reference_email: {{ profile.reference_email }}</p>
-      <p class="profile-info">custom_fields: {{ profile.custom_fields }}</p>
-    </div>  
-  </div>
-  </div>
-</div>
+        <p class="profile-info">field_of_study:{{ profile.field_of_study }}</p>
 
+        <p class="profile-info"> current_grade_level : {{ profile.current_grade_level }}</p>
+        <p class="profile-info">cumulative_gpa : {{ profile.cumulative_gpa }}</p>
+        <p class="profile-info">personal_statement: {{ profile.personal_statement}}</p>
+        <p class="profile-info">optional_essay: {{ profile.optional_essay }}</p>
+        <p class="profile-info"> reference_name: {{ profile.reference_name }}</p>
+        <p class="profile-info">reference_email: {{ profile.reference_email }}</p>
+    </div>
+  </div>
+    <div class="card">
+      <div class="card-body">
+        <p class="profile-info">custom_fields: {{ profile.custom_fields }}</p>
+
+        <p class="profile-info"> current_grade_level : {{ profile.current_grade_level }}</p>
+        <p class="profile-info">cumulative_gpa : {{ profile.cumulative_gpa }}</p>
+        <p class="profile-info">personal_statement: {{ profile.personal_statement}}</p>
+        <p class="profile-info">optional_essay: {{ profile.optional_essay }}</p>
+        <p class="profile-info"> reference_name: {{ profile.reference_name }}</p>
+        <p class="profile-info">reference_email: {{ profile.reference_email }}</p>
+        <p class="profile-info"> {{ profile.custom_fields }}</p>
+      </div>
+    </div>
+  
+  </div>
+  
   </div>
 </body>
-</html>
+  </html>
+
+
+

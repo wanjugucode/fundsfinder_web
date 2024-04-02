@@ -73,6 +73,29 @@
         li{
         list-style: none;
         }
+        #search-form {
+          margin-bottom: 20px;
+        }
+    
+        #search-form label {
+          margin-right: 10px;
+        }
+    
+        #search-form input[type="text"],
+        #search-form input[type="date"] {
+          margin-right: 10px;
+          padding: 5px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+    
+        #search-form button {
+          color:black;
+          background-color: rgb(214, 208, 225);
+          text-transform: uppercase;
+
+     
+        }
     </style>
     {% block css %} {% endblock %}
 
@@ -103,7 +126,7 @@
 
                 </div>
         
-                <li class="nav-item dropdown notification-section">
+                <!-- <li class="nav-item dropdown notification-section">
                     <a href="#" class="notification dropdown-toggle" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-expanded="true">
                         <span><i class='fa fa-bell'></i></span>
@@ -151,7 +174,7 @@
                             <p>No notifications</p>
                         {% endif %}
                     </ul>
-                </li>
+                </li> -->
                 
                 <div class="flex-shrink-0 dropdown" style="margin-right: 20px">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle show" id="dropdownUser2"

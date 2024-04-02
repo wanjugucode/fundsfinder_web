@@ -15,6 +15,7 @@ urlpatterns=[
     path('approved_list/',views.approved_list, name='approved_list'),
     path('bookmarks/',views.bookmarks, name='bookmarks'),
     path('bookmark/<int:scholarship_id>/', views.bookmark_scholarship, name='bookmark_scholarship'),
+    path('delete_bookmark/<int:scholarship_id>/', views.delete_bookmark, name='delete_bookmark'),
     path('applicant_history/',views.application_history, name='applicant_history'),
     path('approved_application/',views.approved_scholarships, name='approved_application'),
     path('add_comment/<int:scholarship_id>/', views.add_comment, name='add_comment'),
@@ -27,6 +28,7 @@ urlpatterns=[
     path('view_report/<int:scholarship_id>/', views.view_report, name='view_report'),
     path('index',views.index,name='home'),
     path('support',views.support_page, name="support"),
+
 
 
     path('item/',views.item, name='item'),

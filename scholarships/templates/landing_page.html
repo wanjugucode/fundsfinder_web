@@ -20,8 +20,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-image: url("{% static 'landing_image.jpg' %}");
+            height: 85vh;
+            background-image: url("{% static 'landing.jpg' %}");
             background-size: cover;
             background-position: center;
             position: relative;
@@ -31,8 +31,8 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 100vh;
-            background-color: rgba(255, 255, 255, 0.67); /* Transparent white overlay */
+            height: 85vh;
+            background-color: rgba(255, 255, 255, 0.576); /* Transparent white overlay */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -44,11 +44,18 @@
             font-size: 3em;
             color: black;
             margin-bottom: 20px;
+            font-weight: 800;
+        }
+        h2{
+            font-weight: 800;
+
         }
         .overlay p {
-            font-size: 1.5em;
+            font-size: 2em;
             color: black;
+            font-weight: 500;
             margin-bottom: 20px;
+            width: 80%;
         }
         .overlay button {
             background-color: rgb(66,43,114);
@@ -71,7 +78,7 @@
         <div class="overlay">
             <h1>FundsFinder  </h1>
               <h2>Simplifying scholarship discovery</h2>
-            <p>Creating an accessible and user-friendly platform for scholarships and financial aid. This platform aims to overcome current obstacles by gathering precise and current information, incorporating advanced search features, and presenting an easy-to-use interface. FundsFinder functions as an all-encompassing tool for students, simplifying the process of discovering and applying for scholarships.</p>
+            <p>Aiming to provide an accessible and user-friendly platform for scholarships and financial aid. It functions as an all-encompassing tool for students, simplifying the process of discovering and applying for scholarships.</p>
             <a href="{% url 'scholarships' %}"><button>Scholarships</button></a>
         </div>
     </div>

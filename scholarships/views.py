@@ -10,6 +10,8 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import get_language, activate, gettext
+from django.http import Http404
+
 
 def is_admin(user):
     return user.is_authenticated and user.is_superuser
@@ -215,6 +217,21 @@ def bookmarks(request):
     user_profile = UserProfile.objects.get(user=request.user)
     bookmarked_scholarships = user_profile.bookmarks.all()
     return render(request, 'bookmark.html', {'user_profile': user_profile, 'bookmarked_scholarships': bookmarked_scholarships})
+
+@login_required
+def delete_bookmark(request, scholarship_id):
+    try:
+        user_profile = UserProfile.objects.get(user=request.user)
+        scholarship = Scholarships.objects.get(id=scholarship_id)
+        if scholarship in user_profile.bookmarks.all():
+            user_profile.bookmarks.remove(scholarship)
+        else:
+            raise Http404("Scholarship not found in bookmarks")
+    except Scholarships.DoesNotExist:
+        raise Http404("Scholarship does not exist")
+    except UserProfile.DoesNotExist:
+        raise Http404("User profile does not exist")
+    return redirect('bookmarks')
 
 @login_required
 def application_history(request):

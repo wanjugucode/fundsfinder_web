@@ -38,6 +38,7 @@ class ApprovedScholarship(models.Model):
 class Bookmark(models.Model):
     userprofile = models.ForeignKey('userprofile.UserProfile', on_delete=models.CASCADE, related_name='bookmarks', null=True)
     scholarship = models.ForeignKey(Scholarships, on_delete=models.CASCADE, related_name='bookmarks', null=True)
+    id= models.IntegerField(primary_key=True,null=False)
 
 class ScholarshipComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

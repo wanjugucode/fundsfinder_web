@@ -29,12 +29,13 @@
 <body>
     <nav>
     <ul class="nav justify-content-center">
+        <li class="nav-item"><a class="nav-link" href="{% url 'landing_page' %}">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'addscholarship'%}">Add scholarship</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'admin_scholarships_view' %}">Scholarships</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'bookmarks' %}">Bookmarks</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'applicant_history' %}">History</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'support' %}">Support</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'scholarships' %}">StudentsView</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'scholarships' %}">Student</a></li>
 
     </ul>
 </nav>
