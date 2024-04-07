@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render,redirect
 from django.core.exceptions import ObjectDoesNotExist
-from userprofile.models import UserProfile,LoginHistory
+from userprofile.models import UserProfile
 from .forms import *
 from .models import Scholarships
 from django.contrib.auth.decorators import login_required,user_passes_test
@@ -11,15 +11,6 @@ from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.utils.translation import get_language, activate, gettext
 from django.http import Http404
-from django.contrib.auth.models import User
-from django.db.models import Count
-from django.db.models.functions import ExtractWeek
-from django.contrib.auth.signals import user_logged_in
-from django.dispatch import receiver
-
-
-
-
 
 
 def is_admin(user):
@@ -156,6 +147,21 @@ def remove_scholarship(request, id):
         return redirect('admin_scholarships_view')  
     else:
         return render(request, 'remove_scholarship.html', {'scholarship': scholarship})
+    
+@user_passes_test(is_admin)
+@login_required
+def dashboard(request):
+    return render(request, 'dashboard.html')
+
+@user_passes_test(is_admin)
+@login_required
+def users_profile(request):
+    return render(request, 'users_profile.html')
+
+@user_passes_test(is_admin)
+@login_required
+def admin_profile(request):
+    return render(request, 'admin_profile.html')
 
 @login_required
 def apply_scholarship(request, scholarship_id):
@@ -171,91 +177,15 @@ def apply_scholarship(request, scholarship_id):
             return redirect('scholarships')  # Redirect to a success page or another appropriate location
     else:
         form = ScholarshipApplicationForm(initial={'scholarship': scholarship_id})
+
     # Include the logged-in user's username, email, and user profile in the context
     username = request.user.username
     email = request.user.email
     user_profile = request.user.userprofile
     return render(request, 'apply_scholarship.html', {'form': form, 'scholarship': scholarship, 'username': username, 'email': email, 'user_profile': user_profile})
 
-@user_passes_test(is_admin)
-def dashboard(request):
-    # Fetch count of admin users
-    admin_users_count = User.objects.filter(is_staff=True).count()
-    # Fetch count of non-admin users
-    non_admin_users_count = User.objects.filter(is_staff=False).count()
-    # Total users count
-    total_users_count = User.objects.count()
-    # Fetch list of users with last login time
-    today = datetime.now().date()
 
-    week_ago = today - timedelta(days=7)
-    logins_per_week = (
-        User.objects
-        .filter(last_login__date__gte=week_ago)
-        .annotate(week=ExtractWeek('last_login'))
-        .values('week')
-        .annotate(login_count=Count('id'))
-        .order_by('week')
-    )
-    start_of_month = datetime(today.year, today.month, 1).date()
-    logins_per_month = User.objects.filter(last_login__date__gte=start_of_month).values('last_login__month').annotate(login_count=Count('id'))
 
-    start_of_year = datetime(today.year, 1, 1).date()
-    logins_per_year = User.objects.filter(last_login__date__gte=start_of_year).values('last_login__year').annotate(login_count=Count('id'))
-    users_list = User.objects.all()
-    context = {
-        'admin_users_count': admin_users_count,
-        'non_admin_users_count': non_admin_users_count,
-        'total_users_count': total_users_count,
-        'users_list': users_list,
-        'logins_per_week': logins_per_week,
-        'logins_per_month': logins_per_month,
-        'logins_per_year': logins_per_year,
-
-    }
-    return render(request, 'dashboard.html', context)
-
-@login_required
-def users_profile(request):
-    # Retrieve the login history for the current user
-    login_history = LoginHistory.objects.filter(user=request.user).order_by('-login_time')
-
-    return render(request, 'users_profile.html', {'login_history': login_history})
-@receiver(user_logged_in)
-def record_login(sender, request, user, **kwargs):
-    LoginHistory.objects.create(user=user)
-
-def is_super_admin(user):
-    return user.is_superuser
-
-@user_passes_test(is_super_admin)
-def add_admin(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        user = User.objects.get(username=username)
-        action = request.POST.get('action')
-        if action == 'add':
-            user.is_staff = True
-        elif action == 'revoke':
-            user.is_staff = False
-        user.save()
-        return redirect('dashboard')  # Assuming 'dashboard' is the URL name for the dashboard page
-    all_users = User.objects.all().exclude(is_staff=True)
-    return render(request, 'add_admin.html', {'all_users': all_users})
-
-def revoke_admin(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        user = User.objects.get(username=username)
-        user.is_staff = False
-        user.save()
-        return redirect('manage_admins')  # Redirect to manage_admins view after revoking admin privileges
-    return redirect('manage_admins')
-@user_passes_test(is_super_admin)
-@login_required
-def users_list(request):
-    users = User.objects.all()
-    return render(request, 'users_list.html', {'users': users})
 @login_required
 def applicants_list(request):
     scholarship_applications = ScholarshipApplication.objects.all()
@@ -280,10 +210,10 @@ def approved_list(request):
     approved_applications = ApprovedScholarship.objects.all()
     return render(request, 'approved_list.html', {'approved_applications': approved_applications})
 
-def bookmark_scholarship(request, scholarship_id):
+def bookmark_scholarship(request, id):  # Change scholarship_id to id
     try:
         # Retrieve the scholarship based on the provided scholarship_id
-        scholarship = get_object_or_404(Scholarships, id=scholarship_id)
+        scholarship = get_object_or_404(Scholarships, id=id)  # Change scholarship_id to id
         user_profile = UserProfile.objects.get(user=request.user)
         # Check if the scholarship is already bookmarked by the user
         if user_profile.bookmarks.filter(scholarship=scholarship).exists():
@@ -298,37 +228,44 @@ def bookmark_scholarship(request, scholarship_id):
     # Redirect back to the bookmarks page
     return redirect('bookmarks')
 
+
+
+
 @login_required
 def bookmarks(request):
     user_profile = UserProfile.objects.get(user=request.user)
     bookmarked_scholarships = user_profile.bookmarks.all()
     return render(request, 'bookmark.html', {'user_profile': user_profile, 'bookmarked_scholarships': bookmarked_scholarships})
 
+
 @login_required
-def remove_bookmark(request, scholarship_id):
-    try:
-        user_profile = UserProfile.objects.get(user=request.user)
-        scholarship = Scholarships.objects.get(id=scholarship_id)
-        bookmark = Bookmark.objects.filter(userprofile=user_profile, scholarship=scholarship)
-        if bookmark.exists():
-            bookmark.delete()
+def remove_bookmark(request, id):
+    user_profile = get_object_or_404(UserProfile, user=request.user)
+    bookmark = get_object_or_404(Bookmark, id=id)
+
+    if user_profile.bookmarks.exists():
+        if bookmark in user_profile.bookmarks.all():
+            user_profile.bookmarks.remove(bookmark)
         else:
-            raise Http404("Bookmark not found")
-    except Scholarships.DoesNotExist:
-        raise Http404("Scholarship does not exist")
-    except UserProfile.DoesNotExist:
-        raise Http404("User profile does not exist")
+            raise Http404("Bookmark not found in user's bookmarks")
+    else:
+        raise Http404("User has no bookmarks")
+
     return redirect('bookmarks')
+
 
 @login_required
 def application_history(request):
     try:
         # Retrieve all scholarship applications
         all_applications = ScholarshipApplication.objects.all()
+
         # Optionally, you can order the applications by submission date or any other relevant field
         all_applications = all_applications.order_by('-created_at')
+
         # Get the user object associated with the current user profile
         user = request.user
+
         return render(request, 'application_history.html', {'user_applications': all_applications, 'user': user})
     except ScholarshipApplication.DoesNotExist:
         # Handle case where no scholarship applications exist
@@ -348,6 +285,7 @@ def approved_scholarships(request):
     except UserProfile.DoesNotExist:
         # Handle case where UserProfile instance does not exist
         user_approved_scholarships = []
+
     return render(request, 'approved_application.html', {'approved_scholarships': user_approved_scholarships})
 
 def add_comment(request, scholarship_id):
@@ -373,6 +311,7 @@ def add_rating(request, scholarship_id):
     else:
         form = RatingForm()
     return render(request, 'add_rating.html', {'form': form})
+
 @login_required
 def edit_comment(request, comment_id):
     try:
@@ -407,6 +346,7 @@ def delete_comment(request, comment_id):
             messages.error(request, 'You do not have permission to delete this comment.')
     except ScholarshipComment.DoesNotExist:
         messages.error(request, 'Comment does not exist.')
+    
     return redirect('scholarships')
 @login_required
 def edit_rating(request, rating_id):
@@ -425,6 +365,9 @@ def edit_rating(request, rating_id):
     else:
         messages.error(request, 'You do not have permission to edit this rating.')
         return redirect('scholarships')
+    
+
+
 @login_required
 def delete_rating(request, rating_id):
     try:

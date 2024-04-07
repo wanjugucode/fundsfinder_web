@@ -5,6 +5,7 @@
 <html>
 <head>
     <title>User Profile</title>
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 </head>
 <body>
     <h2 class="wlcome-info">Welcome, {{ user_profile.user.username }} to your Bookmarked Scholarships</h2>
@@ -16,19 +17,19 @@
             <th>Description</th>
             <th>Eligibility</th>
             <th>Application Deadline</th>
-            <!-- <th>Remove Bookmark</th> -->
+            <th>Remove Bookmark</th>
           </tr>
         </thead>
     <tbody>
         {% for bookmarks in bookmarked_scholarships %}
             <tr>
-            <td>ID:{{ bookmarks.id }}</td>
-            <td>Title:{{ bookmarks.scholarship.name }}</td>
-            <td>Description:{{ bookmarks.scholarship.description }}</td>
-            <td>Eligibility:{{ bookmarks.scholarship.eligibility_criteria }}</td>
-            <td>Deadline{{ bookmarks.scholarship.application_deadline }}</td>
-            <!-- <a href="{}"><button>Delete Bookmark</button></a> -->
-
+            <td>{{ bookmarks.id }}</td>
+            <td>{{ bookmarks.scholarship.name }}</td>
+            <td>{{ bookmarks.scholarship.description }}</td>
+            <td>{{ bookmarks.scholarship.eligibility_criteria }}</td>
+            <td>{{ bookmarks.scholarship.application_deadline }}</td>
+            <td><a href="{% url 'remove_bookmark' bookmarks.scholarship.id %}"><span class="iconify" data-icon="mdi:delete"></span></a></td>
+          
 
     </tr>
         {% endfor %}

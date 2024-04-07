@@ -13,6 +13,7 @@
     <table id="scholarship-table">
         <thead>
           <tr>
+            <th>ID</th>
             <th>Name</th>
             <th>Description</th>
             <th>Eligibility</th>
@@ -25,6 +26,7 @@
         <tbody>
           {% for data in scholarship_data %}
           <tr>
+            <td>{{data.scholarship.id}}</td>
               <td>{{ data.scholarship.name }}</td>
               <td>{{ data.scholarship.description }}</td>
               <td>{{ data.scholarship.eligibility_criteria }}</td>
@@ -40,8 +42,6 @@
                 {% endif %}
             </td>
             <td><a href="{% url 'bookmark_scholarship' scholarship_id=data.scholarship.id %}">Bookmark</a></td>
-
-            
             <tr>
               <td><a href="{% url 'add_comment' scholarship_id=data.scholarship.id %}">Comment</a></td>
               <td><a href="{% url 'add_rating' scholarship_id=data.scholarship.id %}">Rate</a></td>

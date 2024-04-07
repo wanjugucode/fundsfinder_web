@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Last Login</title>
+</head>
+<body>
+    <h1>Last Login</h1>
+    <p>The user's last login was: {{ user.last_login }}</p>
+    <div class="container mt-5">
+      <h1>Login History</h1>
+      <table class="table">
+          <thead>
+              <tr>
+                  <th>Log-in Time</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for log in login_history %}
+              <tr>
+                  <td>{{ log.login_time }}</td>
+              </tr>
+              {% empty %}
+              <tr>
+                  <td colspan="1">No login history available.</td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+  </div>
+</body>
+</html>

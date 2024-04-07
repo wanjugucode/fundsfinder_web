@@ -7,6 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My profile</title>
+  <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
  <style>
@@ -19,13 +20,25 @@
   {
     margin-top: 5%;
   }
+  .user-img{
+justify-items: center;
+margin-left: 10%;
+  }
+  .edit-profile{
+    color: black;
+    font-weight: 500;
+    margin-left: 10%;
+  }
+
  </style>
 <body>
   <div class="container">
   <div class="card-group">
     <div class="card">
       <div class="card-body">
-        <p><a class="nav-link" href="{% url 'editprofile' id=profile.id %}">Edit profile</a></p>
+        <p class="user-img"><img src="https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1223671392?k=20&m=1223671392&s=612x612&w=0&h=lGpj2vWAI3WUT1JeJWm1PRoHT3V15_1pdcTn2szdwQ0=" alt="mdo" width="50" height="50"
+          class="rounded-circle"></p>
+        <p><a class="edit-profile" href="{% url 'editprofile' id=profile.id %}">Edit Profile</a></p>
         <p class="profile-info">Username: {{ profile.user }}</p>
         <p class="profile-info">Telephone: {{ profile.telephone_number }}</p>
         <p class="profile-info">Email: {{ profile.contact_email }}</p>

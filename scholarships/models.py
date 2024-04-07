@@ -17,8 +17,6 @@ class Scholarships(models.Model):
     url = models.CharField(max_length=255,null=True)
 
 
-
-
 class ScholarshipApplication(models.Model):
     userprofile= models.ForeignKey('userprofile.UserProfile', on_delete=models.CASCADE, related_name='scholarships',null=True)
     essay= models.TextField(null=True)

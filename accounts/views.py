@@ -32,7 +32,7 @@ def login_page(request):
 
         if user is not None:
             login(request, user)
-            return redirect('scholarships')
+            return redirect('dashboard' if user.is_staff or user.is_superuser else 'scholarships') 
         else:
             messages.info(request, 'Username or password is incorrect')
 

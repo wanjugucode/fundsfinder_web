@@ -9,7 +9,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="main.css">
+  <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+
   <title>Fundsfinder</title>
 </head>
 
@@ -24,6 +25,7 @@
       </tr>
 
       <tr>
+        <th>ID</th>
         <th>Name</th>
         <th>Decription</th>
         <th>Egliblity</th>
@@ -40,6 +42,7 @@
 
       <tr>
         {%for scholarship in scholarships%}
+        <td>{{scholarship.id}}</td>
         <td>{{scholarship.name}}</td>
         <td>{{scholarship.description}}</td>
         <td>{{scholarship.eligibility_criteria}}</td>
@@ -60,8 +63,8 @@
             N/A
         {% endif %}
       </td> 
-        <td> <a href="{% url 'editscholarship' id=scholarship.id%}"><button>Edit</button></a></td>
-        <td> <a href="{% url 'removescholarship' id=scholarship.id%}"><button>Remove</button></a></td>
+        <td> <a href="{% url 'editscholarship' id=scholarship.id%}"><span class="iconify" data-icon="mdi:pencil"></span></span></a></td>
+        <td> <a href="{% url 'removescholarship' id=scholarship.id%}"><span class="iconify" data-icon="mdi:delete"></span></a></td>
         <tr>
           <td colspan="9">
             <div>
@@ -70,8 +73,8 @@
                 {% for comment in data.comments %}
                 <h4>Comments:</h4>
                     <li>{{ comment.user.username }} - {{ comment.comment }}
-                      <a href="{% url 'edit_comment' comment.id %}">edit</a>
-                      <a href="{% url 'delete_comment' comment.id %}">Delete</a>
+                      <a href="{% url 'edit_comment' comment.id %}"><span class="iconify" data-icon="mdi:pencil"></span></a>
+                      <a href="{% url 'delete_comment' comment.id %}"><span class="iconify" data-icon="mdi:delete"></span></a>
                     </li>
               
                 {% endfor %}
