@@ -22,6 +22,9 @@ from django.dispatch import receiver
 
 
 
+def is_superuser(user):
+    return user.is_authenticated and user.is_superuser
+
 def is_admin(user):
     return user.is_authenticated and user.is_superuser
 
@@ -220,15 +223,15 @@ def users_profile(request):
     # Retrieve the login history for the current user
     login_history = LoginHistory.objects.filter(user=request.user).order_by('-login_time')
 
-    return render(request, 'users_profile.html', {'login_history': login_history})
+    return render(request, 'user_history.html', {'login_history': login_history})
+
 @receiver(user_logged_in)
 def record_login(sender, request, user, **kwargs):
     LoginHistory.objects.create(user=user)
 
-def is_super_admin(user):
-    return user.is_superuser
 
-@user_passes_test(is_super_admin)
+
+@user_passes_test(is_superuser)
 def add_admin(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -239,9 +242,10 @@ def add_admin(request):
         elif action == 'revoke':
             user.is_staff = False
         user.save()
-        return redirect('dashboard')  # Assuming 'dashboard' is the URL name for the dashboard page
-    all_users = User.objects.all().exclude(is_staff=True)
+        return redirect('users')  # Assuming 'dashboard' is the URL name for the dashboard page
+    all_users = User.objects.all()  # Get all users
     return render(request, 'add_admin.html', {'all_users': all_users})
+
 
 def revoke_admin(request):
     if request.method == 'POST':
@@ -249,13 +253,16 @@ def revoke_admin(request):
         user = User.objects.get(username=username)
         user.is_staff = False
         user.save()
-        return redirect('manage_admins')  # Redirect to manage_admins view after revoking admin privileges
-    return redirect('manage_admins')
-@user_passes_test(is_super_admin)
-@login_required
+        return redirect('users')  # Assuming 'users' is the URL name for the users page
+    all_users = User.objects.all()  # Get all users
+    return render(request, 'add_admin.html', {'all_users': all_users})
+
+
+@user_passes_test(is_superuser)
 def users_list(request):
     users = User.objects.all()
     return render(request, 'users_list.html', {'users': users})
+
 @login_required
 def applicants_list(request):
     scholarship_applications = ScholarshipApplication.objects.all()
@@ -322,17 +329,10 @@ def remove_bookmark(request, scholarship_id):
 
 @login_required
 def application_history(request):
-    try:
-        # Retrieve all scholarship applications
-        all_applications = ScholarshipApplication.objects.all()
-        # Optionally, you can order the applications by submission date or any other relevant field
-        all_applications = all_applications.order_by('-created_at')
-        # Get the user object associated with the current user profile
-        user = request.user
-        return render(request, 'application_history.html', {'user_applications': all_applications, 'user': user})
-    except ScholarshipApplication.DoesNotExist:
-        # Handle case where no scholarship applications exist
-        return HttpResponse("No scholarship applications found.")
+    login_history = LoginHistory.objects.filter(user=request.user).order_by('-login_time')
+
+    return render(request, 'application_history.html', {'login_history': login_history})
+
 
 @login_required
 def approved_scholarships(request):

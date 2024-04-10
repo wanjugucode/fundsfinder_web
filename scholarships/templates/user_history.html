@@ -10,7 +10,14 @@
 <body>
     <div class=" ">
         <div class="row">
-
+            <div class="col-2">
+                <div class="nav side-nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <button class="nav-link nav_link" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="false"> <a  href="{% url 'dashboard' %}">Dashboard</a></button>
+                    <button class="nav-link nav_link " id="v-pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#v-pills-disabled" type="button" role="tab" aria-controls="v-pills-disabled" aria-selected="false" > <a href="{% url 'users' %}">Users</a></button>
+                    <button class="nav-link nav_link active" id="v-pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#v-pills-disabled" type="button" role="tab" aria-controls="v-pills-disabled" aria-selected="true" > <a href="{% url 'users_profile' %}">My History</a></button>
+                    <button class="nav-link nav_link" id="v-pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#v-pills-disabled" type="button" role="tab" aria-controls="v-pills-disabled" aria-selected="false" > <a href="{% url 'scholarships' %}">Students View</a></button>
+                </div>
+            </div>
             <div class="col-10">
                 <div class="container mt-5">
                     <h1 class="text-center" style="color: rgb(66, 43, 114);">Last Login</h1>

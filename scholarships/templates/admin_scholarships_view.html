@@ -1,4 +1,4 @@
-{%load static%}
+{% load static %}
 {% include 'admin_nav.html' %}
 {% include 'new_scholarship_notifications.html' %}
 
@@ -16,174 +16,166 @@
 
 <body>
   <div class="scholarship-table">
-
-
-
-    <table id="scholarship-table">
+    <div class="table-responsive">
+      <table id="scholarship-table">
         <tr>
 
-      </tr>
+        </tr>
 
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Decription</th>
-        <th>Egliblity</th>
-        <th>Country</th>
-        <th>Deadline</th>
-        <th>Link</th>
-        <th>Edit</th>
-        <th>Remove</th>
-
-
-      </tr>
-      <tr>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Decription</th>
+          <th>Egliblity</th>
+          <th>Country</th>
+          <th>Deadline</th>
+          <th>Link</th>
+          <th>Edit</th>
+          <th>Remove</th>
 
 
-      <tr>
-        {%for scholarship in scholarships%}
-        <td>{{scholarship.id}}</td>
-        <td>{{scholarship.name}}</td>
-        <td>{{scholarship.description}}</td>
-        <td>{{scholarship.eligibility_criteria}}</td>
-        <td>{{scholarship.country.name }}</td>
+        </tr>
+        <tr>
 
-        <td>
-          {% if scholarship.has_expired %}
-          <button>Expired</button>
 
-          {% else %}
-              <p>{{scholarship.application_deadline }}</p>
-          {% endif %}
-      </td>
-      <td>
-        {% if scholarship.url %}
+        <tr>
+          {% for scholarship in scholarships %}
+          <td>{{scholarship.id}}</td>
+          <td>{{scholarship.name}}</td>
+          <td>{{scholarship.description}}</td>
+          <td>{{scholarship.eligibility_criteria}}</td>
+          <td>{{scholarship.country.name }}</td>
+
+          <td>
+            {% if scholarship.has_expired %}
+            <button>Expired</button>
+
+            {% else %}
+            <p>{{scholarship.application_deadline }}</p>
+            {% endif %}
+          </td>
+          <td>
+            {% if scholarship.url %}
             <a href="{{ scholarship.url }}">Link</a>
-        {% else %}
+            {% else %}
             N/A
-        {% endif %}
-      </td> 
-        <td> <a href="{% url 'editscholarship' id=scholarship.id%}"><span class="iconify" data-icon="mdi:pencil"></span></span></a></td>
-        <td> <a href="{% url 'removescholarship' id=scholarship.id%}"><span class="iconify" data-icon="mdi:delete"></span></a></td>
+            {% endif %}
+          </td>
+          <td> <a href="{% url 'editscholarship' id=scholarship.id%}"><span class="iconify" data-icon="mdi:pencil"></span></a></td>
+          <td> <a href="{% url 'removescholarship' id=scholarship.id%}"><span class="iconify" data-icon="mdi:delete"></span></a></td>
         <tr>
           <td colspan="9">
             <div>
-              
+
               <ul>
                 {% for comment in data.comments %}
                 <h4>Comments:</h4>
-                    <li>{{ comment.user.username }} - {{ comment.comment }}
-                      <a href="{% url 'edit_comment' comment.id %}"><span class="iconify" data-icon="mdi:pencil"></span></a>
-                      <a href="{% url 'delete_comment' comment.id %}"><span class="iconify" data-icon="mdi:delete"></span></a>
-                    </li>
-              
+                <li>{{ comment.user.username }} - {{ comment.comment }}
+                  <a href="{% url 'edit_comment' comment.id %}"><span class="iconify" data-icon="mdi:pencil"></span></a>
+                  <a href="{% url 'delete_comment' comment.id %}"><span class="iconify" data-icon="mdi:delete"></span></a>
+                </li>
+
                 {% endfor %}
-            </ul>
+              </ul>
             </div>
             <div>
-            
+
               <ul>
                 {% for rating in data.ratings %}
                 <h4>Ratings:</h4>
-                    <li>{{ rating.user.username }} - {{ rating.rating }}
-                      <a href="{% url 'edit_rating' rating.id%}">edit</a>
-                      <a href="{% url 'delete_rating' rating.id %}">Delete</a>
+                <li>{{ rating.user.username }} - {{ rating.rating }}
+                  <a href="{% url 'edit_rating' rating.id%}">edit</a>
+                  <a href="{% url 'delete_rating' rating.id %}">Delete</a>
                 </li>
-            
+
                 {% endfor %}
-            </ul>
+              </ul>
             </div>
 
-              <div>
-                <ul>
-                  <h4>
+            <div>
+              <ul>
+                <h4>
 
-                  </h4>
+                </h4>
 
-                </ul>
+              </ul>
             </div>
           </td>
         </tr>
 
-      </tr>
-      {% endfor %}
-    </table>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
   </div>
 
   <style>
+    .scholarship-table {
+      margin: 20px;
+    }
 
- 
-.scholarship-table {
-          margin: 20px;
-        }
-    
-        #scholarship-table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-    
-        #scholarship-table th,
-        #scholarship-table td {
-          border: 1px solid #ddd;
-          padding: 8px;
-        }
-    
-        #scholarship-table th {
-          background-color: #f2f2f2;
-          font-size: 22px;
-        }
-    
-        #scholarship-table tr:nth-child(even) {
-          background-color: #f2f2f2;
-        }
-    
-        #scholarship-table tr:hover {
-          background-color: #ddd;
-        }
-    
+    #scholarship-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-    
-       button:hover, #search-form button:hover {
-          background-color: #1f1c1c;
-          color: white;
-        }
-    
-        button {
-          color: white;
-          text-decoration: none;
-          background-color: rgb(66,43,114);
+    #scholarship-table th,
+    #scholarship-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
 
-        }
-      
-        th{
-                text-align: justify;
-              }
-              
-        tr {
-          background-color: rgb(180, 183, 211);
-          /* box-shadow: 10px 16px 16px #422b72; */
-          box-shadow: 1px 4px 4px #422b72;
-          font-size: 20px;
-          padding: 15px;
-          color: black;
-          
-        }
-        td {
-          font-size: 20px;
-          padding: 15px;
-          color: black;
-          background-color: rgb(180, 183, 211);
+    #scholarship-table th {
+      background-color: #f2f2f2;
+      font-size: 22px;
+    }
 
-        }
-        tr:hover{
-          background-color: rgb(162, 167, 241);
-        }
+    #scholarship-table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
 
-    
-  
-  </style>  
+    #scholarship-table tr:hover {
+      background-color: #ddd;
+    }
 
+    button:hover,
+    #search-form button:hover {
+      background-color: #1f1c1c;
+      color: white;
+    }
 
+    button {
+      color: white;
+      text-decoration: none;
+      background-color: rgb(66, 43, 114);
+    }
+
+    th {
+      text-align: justify;
+    }
+
+    tr {
+      background-color: rgb(180, 183, 211);
+      /* box-shadow: 10px 16px 16px #422b72; */
+      box-shadow: 1px 4px 4px #422b72;
+      font-size: 20px;
+      padding: 15px;
+      color: black;
+
+    }
+
+    td {
+      font-size: 20px;
+      padding: 15px;
+      color: black;
+      background-color: rgb(180, 183, 211);
+
+    }
+
+    tr:hover {
+      background-color: rgb(162, 167, 241);
+    }
+  </style>
 
 </body>
 

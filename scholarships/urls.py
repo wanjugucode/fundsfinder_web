@@ -12,8 +12,7 @@ urlpatterns=[
     path('dashboard',views.dashboard, name='dashboard'),
     path('users_profile',views.users_profile, name='users_profile'),
     path('add_admin/', views.add_admin, name='add_admin'),
-     path('revoke_admin/', views.add_admin, name='revoke_admin'),
-
+    path('revoke/', views.add_admin, name='revoke'),
     path('users/', views.users_list, name='users'),
 
     path('apply_scholarship/<int:scholarship_id>/',views.apply_scholarship, name="applyscholarship"),
