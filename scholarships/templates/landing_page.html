@@ -70,14 +70,67 @@
         .overlay button:hover {
             background-color: rgb(66,43,150);
         }
+
+        /* Media queries for responsiveness */
+        @media only screen and (max-width: 768px) {
+            .overlay h1 {
+                font-size: 2.5em;
+            }
+            .overlay p {
+                font-size: 1.5em;
+                width: 90%;
+            }
+            .overlay button {
+                font-size: 1em;
+                padding: 8px 16px;
+            }
+        }
+
+        @media only screen and (max-width: 576px) {
+            .overlay h1 {
+                font-size: 2em;
+            }
+            .overlay p {
+                font-size: 1.2em;
+                width: 95%;
+            }
+            .overlay button {
+                font-size: 0.8em;
+                padding: 6px 12px;
+            }
+        }
+        @media only screen and (max-width: 576px) {
+            .overlay{
+                height: auto;
+            }
+    .overlay h1 {
+        font-size: 1.5em; /* Reduce font size for h1 */
+    }
+    .overlay h2 {
+        font-size: 1.2em; 
+
+        /* Reduce font size for h2 */
+    }
+    .overlay p {
+        font-size: 1em; /* Reduce font size for p */
+        width: 95%;
+    }
+    .overlay button {
+        font-size: 0.8em;
+        padding: 6px 12px;
+    }
+    img{
+       height: auto;
+    }
+}
     </style>
 </head>
 <body>
 
     <div class="hero">
         <div class="overlay">
-            <h1>FundsFinder  </h1>
-              <h2>Simplifying scholarship discovery</h2>
+            <h1>FundsFinder</h1>
+            <h2>Simplifying scholarship discovery</h2>
             <p>Aiming to provide an accessible and user-friendly platform for scholarships and financial aid. It functions as an all-encompassing tool for students, simplifying the process of discovering and applying for scholarships.</p>
             <a href="{% url 'scholarships' %}"><button>Scholarships</button></a>
         </div>
